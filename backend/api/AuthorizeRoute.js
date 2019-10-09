@@ -28,7 +28,7 @@ router.post('/register', async (req,res) => {
     }
 });
 
-router.post('/LoginRegisterComponent', async (req,res) => {
+router.post('/login', async (req,res) => {
     const { error } = await formValidate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
@@ -40,6 +40,8 @@ router.post('/LoginRegisterComponent', async (req,res) => {
 
     const token = Token.sign({_id: user._id}, process.env.SECRET);
     res.header('auth-token', token).send(token);
+
+    console.log('Logged in');
 
     res.send('Logged In successfully');
 })

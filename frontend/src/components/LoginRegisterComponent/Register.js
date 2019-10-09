@@ -18,12 +18,13 @@ export default class Register extends Component {
                                 <div className="form-label-group">
                                     <input type="password" id="inputPassword" className="form-control"
                                            placeholder="Password" required/>
-                                        <label htmlFor="inputPassword">Password</label>
+                                   <label htmlFor="inputPassword">Password</label>
                                 </div>
 
-                                <button className="btn btn-lg btn-primary btn-block text-uppercase"
-                                        type="submit">Register
+                                <button className="btn btn-lg btn-primary btn-block text-uppercase" type="submit">
+                                    Register
                                 </button>
+
                                 <Link to="/login" className="d-block text-center mt-2 small">Sign In</Link>
                             </form>
                         </div>

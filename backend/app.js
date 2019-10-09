@@ -4,8 +4,8 @@ const log = require("morgan");
 const environment = require('dotenv');
 
 const bodyParser = require("body-parser");
-const guestRoute = require('./routes/AuthorizeRoute');
-const authRoute = require('./routes/AuthorizedRoute')
+const guestRoute = require('./api/AuthorizeRoute');
+const authRoute = require('./api/AuthorizedRoute')
 const app = express();
 
 environment.config();
