@@ -28,7 +28,7 @@ router.post('/register', async (req,res) => {
     }
 });
 
-router.post('/login', async (req,res) => {
+router.post('/LoginRegisterComponent', async (req,res) => {
     const { error } = await formValidate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
