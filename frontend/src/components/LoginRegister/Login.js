@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './styles/Login.scss'
+import './styles/Login.scss';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import AuthenticationService from "../../api/AuthenticationService";
 export default class Login extends Component {

@@ -29,7 +29,12 @@ class AuthenticationService {
 
     setupAxiosConfigure(token) {
         axios.defaults.headers.common['auth-token'] = token;
-        localStorage.setItem('USER_TOKEN', token);
+        sessionStorage.setItem('USER_TOKEN', token);
+    }
+
+    isUserLoggedIn() {
+        let user = sessionStorage.getItem('USER_TOKEN');
+        return user !== null;
     }
 
 }

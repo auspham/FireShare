@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import AuthenticationService from "../../api/AuthenticationService";
+
 export default class Register extends Component {
     constructor(props) {
         super(props);
