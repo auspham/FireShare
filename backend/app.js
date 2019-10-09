@@ -4,7 +4,8 @@ const log = require("morgan");
 const environment = require('dotenv');
 
 const bodyParser = require("body-parser");
-const authRoute = require('./routes/AuthorizeRoute');
+const guestRoute = require('./routes/AuthorizeRoute');
+const authRoute = require('./routes/AuthorizedRoute')
 const app = express();
 
 environment.config();
@@ -18,6 +19,7 @@ app.use(bodyParser.json());
 
 app.use(log("dev"));
 
-app.use('/', authRoute);
+app.use('/', guestRoute);
+app.use('/user', authRoute);
 
 module.exports = app;
