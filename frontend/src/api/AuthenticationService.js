@@ -13,16 +13,10 @@ class AuthenticationService {
     }
 
     async authenticateAccount(email, password) {
-        let res;
-        try {
-            res = await axios.post(`${API_URL}/login`, {
+        let res = await axios.post(`${API_URL}/login`, {
                 email,
                 password
             });
-        } catch (err) {
-            console.error(err);
-            return;
-        }
 
         let { status, data } = res;
 
