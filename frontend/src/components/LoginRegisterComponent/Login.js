@@ -20,7 +20,6 @@ export default class Login extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
         AuthenticationService.authenticateAccount(this.state.email, this.state.password).then(r => console.log(r));
-        
     }
 
     render() {

@@ -3,20 +3,26 @@ import { API_URL } from "../Constants";
 
 class AuthenticationService {
 
-    async registerNewAccount(username, password) {
+    async registerNewAccount(email, password) {
         let res = await axios.post(`${API_URL}/register`, {
-            username,
+            email,
             password
         });
 
         return res;
     }
 
-    async authenticateAccount(username, password) {
-        let res = await axios.post(`${API_URL}/login`, {
-            username,
-            password
-        });
+    async authenticateAccount(email, password) {
+        let res;
+        try {
+            res = await axios.post(`${API_URL}/login`, {
+                email,
+                password
+            });
+        } catch (err) {
+            console.error(err);
+            return;
+        }
 
         let { status, data } = res;
 
