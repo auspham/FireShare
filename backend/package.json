@@ -15,8 +15,12 @@
     "cors": "^2.8.5",
     "dotenv": "^8.1.0",
     "express": "^4.17.1",
+    "gridfs-stream": "^1.1.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.7.3"
+    "method-override": "^3.0.0",
+    "mongoose": "^5.7.3",
+    "multer": "^1.4.2",
+    "multer-gridfs-storage": "^3.3.0"
   },
   "devDependencies": {
     "morgan": "^1.9.1",
