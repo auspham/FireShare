@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './styles/Login.scss';
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
 import AuthenticationService from "../../api/AuthenticationService";
 import CustomAlert from '../Notification/CustomAlert';
 
@@ -27,10 +27,7 @@ export default class Login extends Component {
         event.preventDefault();
         AuthenticationService.authenticateAccount(this.state.email, this.state.password)
             .then(() => {
-                this.props.showAlert(
-                    'Successful!',
-                    'The account you type in is corrected',
-                    'success');
+                this.setState({ redirect: true });
             })
             .catch((err) => {
                 this.props.showAlert(
@@ -42,6 +39,9 @@ export default class Login extends Component {
 
 
     render() {
+        const { redirect } = this.state;
+        if (redirect) return <Redirect to="/" exact/>
+
         return <div className="container">
             <div className="row">
                 <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
