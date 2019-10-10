@@ -8,15 +8,10 @@ import AuthenticationService from '../api/AuthenticationService';
 import AuthRoute from "./AuthRoute";
 
 export default class Routing extends Component {
-    isLoggedIn = () => {
-        return AuthenticationService.isUserLoggedIn();
-    }
-
     render() {
         return (
             <Router>
                 <Switch>
-
                     <Route path="/login"><Login /></Route>
                     <Route path="/register"><Register/></Route>
                     <AuthRoute authed={AuthenticationService.isUserLoggedIn()} path="/">

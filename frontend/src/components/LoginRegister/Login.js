@@ -2,12 +2,18 @@ import React, { Component } from 'react';
 import './styles/Login.scss';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import AuthenticationService from "../../api/AuthenticationService";
+import CustomAlert from '../Notification/CustomAlert';
+
 export default class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
             email: '',
             password: '',
+            show: false,
+            heading: '',
+            message: '',
+            type: '',
         }
     }
 
@@ -19,11 +25,39 @@ export default class Login extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        AuthenticationService.authenticateAccount(this.state.email, this.state.password).then(r => console.log(r));
+        AuthenticationService.authenticateAccount(this.state.email, this.state.password)
+            .then(() => {
+                this.handleShow(true);
+                this.setState({
+                    heading: 'Hurray!',
+                    message: 'The account you type in is correct!',
+                    type: 'success'
+                })
+            })
+            .catch((err) => {
+                this.handleShow(true);
+                this.setState({
+                    heading: 'Authentication Error',
+                    message: 'Sorry, we cannot verify your account.',
+                    type: 'danger'
+                })
+            });
+    }
+
+    handleShow = (value) => {
+        this.setState({
+            show: value
+        });
+        setTimeout(() => {
+            this.setState({show: false})
+        },2000);
     }
 
     render() {
         return <div className="container">
+            <CustomAlert show={this.state.show} heading={this.state.heading}
+                         message={this.state.message} type={this.state.type}
+                         handleShow={this.handleShow} />
             <div className="row">
                 <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
                     <div className="card card-signin my-5">
