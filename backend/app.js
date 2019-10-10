@@ -38,42 +38,42 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(bodyParser.json());
 
-const connection = Database.createConnection(
+const connection = Database.connect(
     process.env.DB_CONNECT,
     { useNewUrlParser: true, useUnifiedTopology: true });
 
 let gfs;
 
-connection.once('open', function() {
-    // Initialize file stream
-    gfs = Grid(connection.db, Database.mongo);
-    gfs.collection('uploads');
-})
-
-// Create storage engine
-const storage = new GridFsStorage({
-    url: process.env.DB_CONNECT,
-    file: (req, file) => {
-        return new Promise((resolve, reject) => {
-            crypto.randomBytes(16, (err, buf) => {
-                if (err) {
-                    return reject(err);
-                }
-                const filename = buf.toString('hex') + path.extname(file.originalname);
-                const fileInfo = {
-                    filename: filename,
-                    bucketName: 'uploads'
-                };
-                resolve(fileInfo);
-            });
-        });
-    }
-});
-const upload = multer({ storage });
+// connection.once('open', function() {
+//     // Initialize file stream
+//     gfs = Grid(connection.db, Database.mongo);
+//     gfs.collection('uploads');
+// })
+//
+// // Create storage engine
+// const storage = new GridFsStorage({
+//     url: process.env.DB_CONNECT,
+//     file: (req, file) => {
+//         return new Promise((resolve, reject) => {
+//             crypto.randomBytes(16, (err, buf) => {
+//                 if (err) {
+//                     return reject(err);
+//                 }
+//                 const filename = buf.toString('hex') + path.extname(file.originalname);
+//                 const fileInfo = {
+//                     filename: filename,
+//                     bucketName: 'uploads'
+//                 };
+//                 resolve(fileInfo);
+//             });
+//         });
+//     }
+// });
+// const upload = multer({ storage });
 
 app.use('/', guestRoute);
 app.use('/user', authRoute);
-app.post('/upload', upload.single('file'), (req, res) => {
-    res.json({ file: req.file });
-});
+// app.post('/upload', upload.single('file'), (req, res) => {
+//     res.send(req.file);
+// });
 module.exports = app;

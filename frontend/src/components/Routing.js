@@ -4,22 +4,69 @@ import Dashboard from './Main/Dashboard';
 import NotFound from './NotFound';
 import AuthenticationService from '../api/AuthenticationService';
 import AuthRoute from "./AuthRoute";
-import LoginRegister from './LoginRegister/LoginRegister'
+import CustomAlert from "./Notification/CustomAlert";
+import Login from './LoginRegister/Login';
+import Register from "./LoginRegister/Register";
 
 class Routing extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            show: false,
+            heading: '',
+            message: '',
+            type: '',
+            redirect: false
+        }
+    }
+
+    showAlert = (heading, message, type) => {
+        this.handleShow(true);
+
+        this.setState({
+            heading: heading,
+            message: message,
+            type: type,
+        });
+    };
+
+    handleShow = (value) => {
+        this.setState({
+            show: value
+        });
+        setTimeout(() => {
+            this.setState({show: false})
+        },2000);
+    };
+
+    handleLogIn = () => {
+        this.setState({
+            redirect: true
+        })
+    }
+
     render() {
+
         return (
+            <> <CustomAlert show={this.state.show} heading={this.state.heading}
+                         message={this.state.message} type={this.state.type}
+                         handleShow={this.handleShow} />
+
             <Router>
                 <Switch>
-                    <Route exact path="/"><LoginRegister /></Route>
-                    <Route path="/login"><LoginRegister /></Route>
-                    <Route path="/register"><LoginRegister/></Route>
+                    <Route path="/login"><Login handleLogin={this.handleLogIn}
+                                                redirect={this.state.redirect} showAlert={this.showAlert}/></Route>
+                    <Route path="/register"><Register showAlert={this.showAlert}/></Route>
                     <AuthRoute authed={AuthenticationService.isUserLoggedIn()} path="/dashboard">
+                        <Dashboard/>
+                    </AuthRoute>
+                    <AuthRoute authed={AuthenticationService.isUserLoggedIn()} path="/">
                         <Dashboard/>
                     </AuthRoute>
                     <Route component={NotFound}/>
                 </Switch>
             </Router>
+            </>
         )
     }
 }

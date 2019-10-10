@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import './styles/Login.scss';
-import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link, Redirect, withRouter } from "react-router-dom";
 import AuthenticationService from "../../api/AuthenticationService";
 import CustomAlert from '../Notification/CustomAlert';
 
-export default class Login extends Component {
+class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -14,6 +14,13 @@ export default class Login extends Component {
             heading: '',
             message: '',
             type: '',
+            redirect: false
+        }
+    }
+
+    componentDidMount() {
+        if(AuthenticationService.isUserLoggedIn() && !this.props.redirect) {
+            this.props.handleLogin();
         }
     }
 
@@ -25,12 +32,16 @@ export default class Login extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
+        const { history, redirect, handleLogin } = this.props;
         AuthenticationService.authenticateAccount(this.state.email, this.state.password)
             .then(() => {
-                console.log('redirect');
-                this.setState({ redirect: true });
+                if(redirect === false) {
+                    handleLogin();
+                    history.push('/dashboard');
+                }
             })
             .catch((err) => {
+                console.log(err)
                 this.props.showAlert(
                     'Error!',
                     'Sorry, we cannot verify your account',
@@ -40,8 +51,8 @@ export default class Login extends Component {
 
 
     render() {
-        const { redirect } = this.state;
-        if (redirect) return <Redirect to="/dashboard" exact/>
+        // const { redirect } = this.state;
+        // if (redirect) return <Redirect exact to="/dashboard"/>
 
         return <div className="container">
             <div className="row">
@@ -49,7 +60,7 @@ export default class Login extends Component {
                     <div className="card card-signin my-5">
                         <div className="card-body">
                             <h5 className="card-title text-center">Sign In</h5>
-                            <form className="form-signin" onSubmit={this.handleSubmit}>
+                            <form className="form-signin">
                                 <div className="form-label-group">
                                     <input type="email" name="email" id="inputEmail" className="form-control"
                                            placeholder="Email address" onChange={this.handleChange} required autoFocus/>
@@ -62,7 +73,8 @@ export default class Login extends Component {
                                     <label htmlFor="inputPassword">Password</label>
                                 </div>
 
-                                <button className="btn btn-lg btn-primary btn-block text-uppercase" type="submit">
+                                <button className="btn btn-lg btn-primary btn-block text-uppercase" type="submit"
+                                        onClick={this.handleSubmit}>
                                     Sign in
                                 </button>
 
@@ -76,3 +88,4 @@ export default class Login extends Component {
     }
 }
 
+export default withRouter(Login);
