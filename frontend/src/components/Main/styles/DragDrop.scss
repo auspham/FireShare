@@ -3,6 +3,10 @@
   height: 200px;
   border-width: 2px;
   margin-bottom: 20px;
+
+  &:hover{
+    cursor: pointer;
+  }
 }
 
 /* skin.css Style*/

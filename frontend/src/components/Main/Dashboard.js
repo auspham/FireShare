@@ -6,13 +6,15 @@ import {Button, Table} from "react-bootstrap";
 import { withRouter } from 'react-router-dom';
 import { Modal } from "react-bootstrap";
 import UploadModal from "./UploadModal";
+import CustomAlert from "../Notification/CustomAlert";
 
 class Dashboard extends Component {
     constructor(props) {
         super(props);
         this.state = {
             message: '',
-            show: false
+            showUpload: false,
+            showAlert: false
         }
     }
 
@@ -28,14 +30,39 @@ class Dashboard extends Component {
     }
 
     openModal = (option) => {
-        this.setState({show: option})
-    }
+        this.setState({showUpload: option})
+    };
+
+    handleShow = (value) => {
+        this.setState({
+            showAlert: value
+        });
+        setTimeout(() => {
+            this.setState({showAlert: false})
+        },2000);
+    };
+
+    showAlert = (heading, message, type) => {
+        this.handleShow(true);
+
+        this.setState({
+            heading: heading,
+            message: message,
+            type: type,
+        });
+    };
 
     render() {
         return <div className="container mt-5 align-content-center">
-            <UploadModal show={this.state.show} openModal={this.openModal}/>
+            <CustomAlert show={this.state.showAlert} heading={this.state.heading}
+                         message={this.state.message} type={this.state.type}
+                         handleShow={this.handleShow} />
+
+            <UploadModal show={this.state.showUpload} openModal={this.openModal}
+                         showAlert={this.showAlert}/>
+
             <div className="table-head">
-                <div class="pull-left">
+                <div className="pull-left">
                     <p>My File</p>
                 </div>
                 <div className="pull-right">

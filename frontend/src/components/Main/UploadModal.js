@@ -1,19 +1,22 @@
 import React, { Component } from "react";
 import { Modal, Button } from "react-bootstrap";
 import './styles/DragDrop.scss';
+import AccountService from "../../api/AccountService";
 
 export default class UploadModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            file: null,
             onDrag: false
         }
+        this.fileInput = React.createRef();
     }
 
-    ok = () => {
-    };
 
-    handleOnDrag = () => {
+    handleOnDrag = (event) => {
+        event.preventDefault();
+
         this.setState({
             onDrag: true
         })
@@ -25,39 +28,76 @@ export default class UploadModal extends Component {
         })
     };
 
-    handleDropFile = (event) => {
-        this.setState({
-            onDrag: false
-        });
+    handleTraditionUploadFile = (event) => {
+        const { file } = this.state;
 
-        this.uploadFile(event.dataTransfer.files);
+        if (file) this.props.showAlert(
+            'Watch out!',
+            'You are overriding your previous file',
+            'warning');
+
+        this.setState({
+            file: event.target.files[0],
+        })
     };
 
-    uploadFile = (file) => {
+    handleDropFile = (event) => {
+        event.preventDefault();
 
+        const { file } = this.state;
+
+        if (file) this.props.showAlert(
+            'Watch out!',
+            'You are overriding your previous file',
+            'warning');
+
+        this.setState({
+            onDrag: false,
+            file: event.dataTransfer.files[0]
+        });
+
+        console.log(event.dataTransfer.files[0]);
+
+    };
+
+    openFileDialog = () => {
+        this.fileInput.current.click();
+    };
+
+    uploadFile = () => {
+        const { file } = this.state;
+
+        if (file) {
+            AccountService.uploadFile().then(r => console.log(r));
+            this.props.showAlert(
+                'Success!',
+                'We are uploading your file..',
+                'success');
+        } else {
+            this.props.showAlert(
+                'Warning!',
+                'You have to choose a file first',
+                'danger');
+        }
     };
 
     render(){
-        const { onDrop } = this.state;
+        const { onDrag, file } = this.state;
 
         return <Modal show={this.props.show} onHide={() => this.props.openModal(false)}>
             <Modal.Header closeButton>
                 <Modal.Title>Upload file</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <h5>Select files from your computer</h5>
-                <form action="" method="post" encType="multipart/form-data" id="js-upload-form">
-                    <div className="form-inline">
-                        <div className="form-group">
-                            <input type="file" name="files[]" id="js-upload-files" multiple/>
-                        </div>
-                    </div>
-                </form>
+                <h5>Clock to select files from your computer or drag and drop to the area</h5>
 
-                <h5>Or drag and drop files below</h5>
-                <div className={"upload-drop-zone" + (onDrop ? " drop" : "")} id="drop-zone"
-                     onDragOver={this.handleOnDrag} onDrop={this.handleDropFile} onDragLeave={this.handleOnDragLeave}>
-                    Just drag and drop files here
+                <input className="d-none" ref={this.fileInput} type="file" name="files[]"
+                       onChange={this.handleTraditionUploadFile}/>
+
+                <div className={"upload-drop-zone" + (onDrag ? " drop" : "")} id="drop-zone"
+                     onDragOver={this.handleOnDrag} onDrop={this.handleDropFile} onDragLeave={this.handleOnDragLeave}
+                     onClick={this.openFileDialog}>
+                    {file ? `You have chosen ${file.name}` : "Just drag and drop files here"}
                 </div>
             </Modal.Body>
             <Modal.Footer>
