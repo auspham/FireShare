@@ -27,6 +27,7 @@ export default class Login extends Component {
         event.preventDefault();
         AuthenticationService.authenticateAccount(this.state.email, this.state.password)
             .then(() => {
+                console.log('redirect');
                 this.setState({ redirect: true });
             })
             .catch((err) => {
@@ -40,7 +41,7 @@ export default class Login extends Component {
 
     render() {
         const { redirect } = this.state;
-        if (redirect) return <Redirect to="/" exact/>
+        if (redirect) return <Redirect to="/dashboard" exact/>
 
         return <div className="container">
             <div className="row">

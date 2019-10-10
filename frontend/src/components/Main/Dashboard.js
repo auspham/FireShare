@@ -3,7 +3,9 @@ import AccountService from '../../api/AccountService'
 import AuthenticationService from "../../api/AuthenticationService";
 import './styles/Dashboard.scss'
 import {Button, Table} from "react-bootstrap";
-export default class Dashboard extends Component {
+import { withRouter } from 'react-router-dom';
+
+class Dashboard extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -65,3 +67,5 @@ export default class Dashboard extends Component {
         </div>
     }
 }
+
+export default withRouter(Dashboard);

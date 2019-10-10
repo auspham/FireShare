@@ -3,7 +3,7 @@ import CustomAlert from "../Notification/CustomAlert";
 
 import Login from './Login'
 import Register from "./Register";
-import {withRouter} from 'react-router-dom';
+import {withRouter, Redirect} from 'react-router-dom';
 
 class LoginRegister extends Component {
     constructor(props) {
@@ -13,6 +13,13 @@ class LoginRegister extends Component {
             heading: '',
             message: '',
             type: '',
+            redirect: false
+        }
+    }
+
+    componentDidMount() {
+        if(sessionStorage.getItem('USER_TOKEN')) {
+            this.setState({redirect: true});
         }
     }
 
@@ -40,12 +47,15 @@ class LoginRegister extends Component {
         const { pathname } = this.props.location;
         const { showLogin } = this.state;
 
+        const { redirect } = this.state;
+        if (redirect) return <Redirect strict to="/dashboard"/>
+
         return <>
             <CustomAlert show={this.state.show} heading={this.state.heading}
                      message={this.state.message} type={this.state.type}
                      handleShow={this.handleShow} />
-            {(pathname === '/login') ? (<Login showAlert={this.showAlert}/>) :
-                (<Register showAlert={this.showAlert}/>)}
+            {(pathname === '/register') ? (<Register showAlert={this.showAlert}/>) :
+                (<Login showAlert={this.showAlert}/>)}
             </>
     }
 }
