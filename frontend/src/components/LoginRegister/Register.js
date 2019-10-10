@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
 import AuthenticationService from "../../api/AuthenticationService";
+import CustomAlert from "../Notification/CustomAlert";
 
 export default class Register extends Component {
     constructor(props) {
@@ -8,6 +9,7 @@ export default class Register extends Component {
         this.state = {
             email: '',
             password: '',
+            redirect: false
         }
     }
 
@@ -15,14 +17,32 @@ export default class Register extends Component {
         this.setState({
             [event.target.name]: event.target.value
         });
-    }
+    };
 
     handleSubmit = (event) => {
         event.preventDefault();
-        AuthenticationService.registerNewAccount(this.state.email, this.state.password).then(r => console.log(r));
-    }
+        AuthenticationService.registerNewAccount(this.state.email, this.state.password)
+            .then(() => {
+                this.setState({ redirect: true });
+                this.props.showAlert(
+                    'Successful!',
+                    'Look who just got an account',
+                    'success');
+            })
+            .catch((err) => {
+                console.error(err);
+                this.props.showAlert(
+                    'Error!',
+                    'Sorry, email is already in used',
+                    'warning');
+            });
+    };
+
 
     render() {
+        const { redirect } = this.state;
+        if (redirect) return <Redirect to="/login"/>
+
         return <div className="container">
             <div className="row">
                 <div className="col-lg-10 col-xl-9 mx-auto">

@@ -27,37 +27,22 @@ export default class Login extends Component {
         event.preventDefault();
         AuthenticationService.authenticateAccount(this.state.email, this.state.password)
             .then(() => {
-                this.handleShow(true);
-                this.setState({
-                    heading: 'Hurray!',
-                    message: 'The account you type in is correct!',
-                    type: 'success'
-                })
+                this.props.showAlert(
+                    'Successful!',
+                    'The account you type in is corrected',
+                    'success');
             })
             .catch((err) => {
-                this.handleShow(true);
-                this.setState({
-                    heading: 'Authentication Error',
-                    message: 'Sorry, we cannot verify your account.',
-                    type: 'danger'
-                })
+                this.props.showAlert(
+                    'Error!',
+                    'Sorry, we cannot verify your account',
+                    'danger');
             });
-    }
+    };
 
-    handleShow = (value) => {
-        this.setState({
-            show: value
-        });
-        setTimeout(() => {
-            this.setState({show: false})
-        },2000);
-    }
 
     render() {
         return <div className="container">
-            <CustomAlert show={this.state.show} heading={this.state.heading}
-                         message={this.state.message} type={this.state.type}
-                         handleShow={this.handleShow} />
             <div className="row">
                 <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
                     <div className="card card-signin my-5">
