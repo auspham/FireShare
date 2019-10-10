@@ -41,6 +41,8 @@ router.post('/login', async (req,res) => {
     const token = Token.sign({_id: user._id}, process.env.SECRET);
     res.header('auth-token', token).send(token);
 
+    console.log('Logged in');
+
     res.send('Logged In successfully');
 })
 
