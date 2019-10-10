@@ -22,15 +22,15 @@ class AuthenticationService {
         let { status, data } = res;
 
         if(status === 200) {
-            this.setupAxiosConfigure(data.token);
+            this.setupAxiosConfigure(data);
         }
 
         return res;
     }
 
     setupAxiosConfigure(token) {
-        axios.defaults.headers.common['auth-token'] = token;
         sessionStorage.setItem('USER_TOKEN', token);
+        axios.defaults.headers.common['auth-token'] = sessionStorage.getItem('USER_TOKEN');
     }
 
     isUserLoggedIn() {
