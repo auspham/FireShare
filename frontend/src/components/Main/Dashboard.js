@@ -4,12 +4,15 @@ import AuthenticationService from "../../api/AuthenticationService";
 import './styles/Dashboard.scss'
 import {Button, Table} from "react-bootstrap";
 import { withRouter } from 'react-router-dom';
+import { Modal } from "react-bootstrap";
+import UploadModal from "./UploadModal";
 
 class Dashboard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            message: ''
+            message: '',
+            show: false
         }
     }
 
@@ -24,14 +27,19 @@ class Dashboard extends Component {
         })
     }
 
+    openModal = (option) => {
+        this.setState({show: option})
+    }
+
     render() {
-        return <div className="container mt-5">
+        return <div className="container mt-5 align-content-center">
+            <UploadModal show={this.state.show} openModal={this.openModal}/>
             <div className="table-head">
                 <div class="pull-left">
                     <p>My File</p>
                 </div>
                 <div className="pull-right">
-                    <Button className="mb-2 float-right">Upload file</Button>
+                    <Button className="mb-2 float-right" onClick={() => {this.openModal(true)}}>Upload file</Button>
                 </div>
                 <div className="clearfix"></div>
             </div>
