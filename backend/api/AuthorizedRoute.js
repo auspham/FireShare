@@ -2,13 +2,16 @@ const router = require('express').Router();
 const auth = require('../helpers/tokenVerfier');
 const mongoose = require('mongoose');
 const multer = require('multer');
+const fs = require('fs');
 const User = require('../models/User');
 const File = require('../models/File');
-
+let user;
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
-        cb(null, './uploads/');
+        const dir = './uploads/'
+        !fs.existsSync(`${dir}/${req.user._id}`) && fs.mkdirSync(`${dir}/${req.user._id}`);
+        cb(null, './uploads/' + req.user._id);
     },
     filename: function(req, file, cb) {
         cb(null, file.originalname);
@@ -22,12 +25,11 @@ const upload = multer({
     },
 });
 
-
-
 // @route GET /user/
 // @desc Return the current user files
 router.get('/', auth, async (req,res) => {
     const user = req.user;
+
     try {
         const allFiles = await File.find();
         res.status(200).send(allFiles);
@@ -38,7 +40,7 @@ router.get('/', auth, async (req,res) => {
 
 // @route POST /user/upload
 // @desc Upload files to db
-router.post("/upload", upload.single('file'), auth, async (req, res, next) => {
+router.post("/upload", auth, upload.single('file'), async (req, res, next) => {
     const { email } = await User.findOne({ _id: req.user });
 
     const file = new File({

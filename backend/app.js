@@ -40,5 +40,8 @@ const connection = Database.connect(
 
 app.use('/', guestRoute);
 app.use('/user', authRoute);
-
+app.get('/uploads/:user/:file', (req, res) => {
+    const file = `${__dirname}/uploads/${req.params.user}/${req.params.file}`;
+    res.download(file);
+});
 module.exports = app;

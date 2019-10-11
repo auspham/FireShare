@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import AccountService from '../../api/AccountService'
-import AuthenticationService from "../../api/AuthenticationService";
 import './styles/Dashboard.scss'
 import {Button, Table} from "react-bootstrap";
 import { withRouter } from 'react-router-dom';
-import { Modal } from "react-bootstrap";
 import UploadModal from "./UploadModal";
 import CustomAlert from "../Notification/CustomAlert";
+import { API_URL } from '../../Constants'
 import axios from "axios";
 
 class Dashboard extends Component {
@@ -81,6 +80,8 @@ class Dashboard extends Component {
                     <th>Size (kb)</th>
                     <th>Modified</th>
                     <th>Owner</th>
+                    <th>Download</th>
+
                 </tr>
                 </thead>
                 <tbody>
@@ -92,6 +93,7 @@ class Dashboard extends Component {
                         <td>{file.size}</td>
                         <td>{file.date}</td>
                         <td>{file.ownerEmail}</td>
+                        <td><a href={`${API_URL}/${file.download}`} target="_blank">Download</a></td>
                     </tr>)
                 })}
                 </tbody>
