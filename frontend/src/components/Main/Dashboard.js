@@ -7,23 +7,24 @@ import { withRouter } from 'react-router-dom';
 import { Modal } from "react-bootstrap";
 import UploadModal from "./UploadModal";
 import CustomAlert from "../Notification/CustomAlert";
+import axios from "axios";
 
 class Dashboard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            message: '',
+            myFiles: [],
             showUpload: false,
             showAlert: false
         }
     }
 
     componentDidMount() {
-        AuthenticationService.setupAxiosConfigure(sessionStorage.getItem('USER_TOKEN'));
+        axios.defaults.headers.common['auth-token'] = sessionStorage.getItem('USER_TOKEN');
 
         AccountService.retrieveInfo().then(result => {
             this.setState({
-                message: result.data._id
+                myFiles: result.data
             });
             console.log(result);
         })
@@ -77,26 +78,22 @@ class Dashboard extends Component {
                     <th>#</th>
                     <th>File ID</th>
                     <th>File name</th>
+                    <th>Size (kb)</th>
                     <th>Modified</th>
                     <th>Owner</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>1 min</td>
-                    <td>@mdo</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>2 min</td>
-                    <td>@fat</td>
-                </tr>
-
+                {this.state.myFiles.map((file,i) => {
+                    return (<tr>
+                        <td>{i}</td>
+                        <td>{file._id}</td>
+                        <td>{file.name}</td>
+                        <td>{file.size}</td>
+                        <td>{file.date}</td>
+                        <td>{file.ownerEmail}</td>
+                    </tr>)
+                })}
                 </tbody>
             </Table>
         </div>
