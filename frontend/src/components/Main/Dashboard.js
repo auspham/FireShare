@@ -6,6 +6,9 @@ import { withRouter } from 'react-router-dom';
 import UploadModal from "./UploadModal";
 import CustomAlert from "../Notification/CustomAlert";
 import { API_URL } from '../../Constants'
+import moment from "moment";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {faUserPlus} from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
 class Dashboard extends Component {
@@ -21,6 +24,10 @@ class Dashboard extends Component {
     componentDidMount() {
         axios.defaults.headers.common['auth-token'] = sessionStorage.getItem('USER_TOKEN');
 
+        this.fetchFiles();
+    }
+
+    fetchFiles = () => {
         AccountService.retrieveInfo().then(result => {
             this.setState({
                 myFiles: result.data
@@ -59,7 +66,7 @@ class Dashboard extends Component {
                          handleShow={this.handleShow} />
 
             <UploadModal show={this.state.showUpload} openModal={this.openModal}
-                         showAlert={this.showAlert}/>
+                         showAlert={this.showAlert} fetchFile={this.fetchFiles}/>
 
             <div className="table-head">
                 <div className="pull-left">
@@ -81,7 +88,7 @@ class Dashboard extends Component {
                     <th>Modified</th>
                     <th>Owner</th>
                     <th>Download</th>
-
+                    <th>Share</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -90,10 +97,11 @@ class Dashboard extends Component {
                         <td>{i}</td>
                         <td>{file._id}</td>
                         <td>{file.name}</td>
-                        <td>{file.size}</td>
-                        <td>{file.date}</td>
+                        <td>{file.size / 100000 * 100}</td>
+                        <td>{moment(file.date).fromNow()}</td>
                         <td>{file.ownerEmail}</td>
                         <td><a href={`${API_URL}/${file.download}`} target="_blank">Download</a></td>
+                        <td className="text-center shareIcon"><FontAwesomeIcon icon={faUserPlus}/></td>
                     </tr>)
                 })}
                 </tbody>

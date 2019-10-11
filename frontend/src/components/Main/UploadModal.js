@@ -70,6 +70,9 @@ export default class UploadModal extends Component {
         if (file) {
             AccountService.uploadFile(file).then(r => {
                 console.log(r);
+                this.props.openModal(false);
+                this.props.fetchFile();
+
                 this.props.showAlert(
                     'Success!',
                     'We are uploading your file..',
