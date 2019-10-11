@@ -14,13 +14,12 @@ class Login extends Component {
             heading: '',
             message: '',
             type: '',
-            redirect: false
         }
     }
 
     componentDidMount() {
-        if(AuthenticationService.isUserLoggedIn() && !this.props.redirect) {
-            this.props.handleLogin();
+        if(AuthenticationService.isUserLoggedIn() && !this.props.isLoggedIn) {
+            this.props.history.push('/dashboard');
         }
     }
 
@@ -32,10 +31,10 @@ class Login extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        const { history, redirect, handleLogin } = this.props;
+        const { history, isLoggedIn, handleLogin } = this.props;
         AuthenticationService.authenticateAccount(this.state.email, this.state.password)
             .then(() => {
-                if(redirect === false) {
+                if(isLoggedIn === false) {
                     handleLogin();
                     history.push('/dashboard');
                 }
@@ -51,9 +50,6 @@ class Login extends Component {
 
 
     render() {
-        // const { redirect } = this.state;
-        // if (redirect) return <Redirect exact to="/dashboard"/>
-
         return <div className="container">
             <div className="row">
                 <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">

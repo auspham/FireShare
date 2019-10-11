@@ -16,7 +16,7 @@ class Routing extends Component {
             heading: '',
             message: '',
             type: '',
-            redirect: false
+            isLoggedIn: false
         }
     }
 
@@ -41,7 +41,7 @@ class Routing extends Component {
 
     handleLogIn = () => {
         this.setState({
-            redirect: true
+            isLoggedIn: true
         })
     }
 
@@ -54,9 +54,14 @@ class Routing extends Component {
 
             <Router>
                 <Switch>
-                    <Route path="/login"><Login handleLogin={this.handleLogIn}
-                                                redirect={this.state.redirect} showAlert={this.showAlert}/></Route>
-                    <Route path="/register"><Register showAlert={this.showAlert}/></Route>
+                    <Route path="/login">
+                        <Login handleLogin={this.handleLogIn}
+                               isLoggedIn={this.state.isLoggedIn} showAlert={this.showAlert}/>
+                    </Route>
+                    <Route path="/register">
+                        <Register isLoggedIn={this.state.isLoggedIn}
+                                  showAlert={this.showAlert}/>
+                    </Route>
                     <AuthRoute authed={AuthenticationService.isUserLoggedIn()} path="/dashboard">
                         <Dashboard/>
                     </AuthRoute>

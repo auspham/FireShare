@@ -19,7 +19,6 @@ class Dashboard extends Component {
     }
 
     componentDidMount() {
-        console.log('did mount dashboard');
         AuthenticationService.setupAxiosConfigure(sessionStorage.getItem('USER_TOKEN'));
 
         AccountService.retrieveInfo().then(result => {
