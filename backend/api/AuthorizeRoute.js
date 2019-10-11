@@ -43,7 +43,10 @@ router.post('/login', async (req,res) => {
     if(!validPassword) return res.status(400).send('Invalid password');
 
     const token = Token.sign({_id: user._id}, process.env.SECRET);
-    res.header('auth-token', token).send(token);
+    res.header('auth-token', token).send({
+        token: token,
+        id: user._id
+    });
 
     console.log('Logged in');
 
