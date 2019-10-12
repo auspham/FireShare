@@ -5,14 +5,11 @@ import {Button, Table} from "react-bootstrap";
 import { withRouter } from 'react-router-dom';
 import UploadModal from "./UploadModal";
 import CustomAlert from "../Notification/CustomAlert";
-import { API_URL } from '../../Constants'
-import moment from "moment";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faUserPlus} from "@fortawesome/free-solid-svg-icons";
+
 import axios from "axios";
 import ShareModal from "./ShareModal";
-import { Tooltip, OverlayTrigger } from "react-bootstrap";
-
+import MyFile from "./MyFile";
+import SharedWithMeFile from "./SharedWithMeFile";
 class Dashboard extends Component {
     constructor(props) {
         super(props);
@@ -99,53 +96,15 @@ class Dashboard extends Component {
                 <div className="clearfix"></div>
             </div>
 
-            <Table striped bordered hover>
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>File name</th>
-                    <th>Size (kb)</th>
-                    <th>Modified</th>
-                    <th>Owner</th>
-                    <th>Download</th>
-                    <th>Share</th>
-                </tr>
-                </thead>
-                <tbody>
-                {this.state.myFiles.map((file,i) => {
-                    return (<tr key={i}>
-                        <td>{i}</td>
-                        <td>{file.name}</td>
-                        <td>{Math.round(file.size * 100 ) / 100000}</td>
-                        <td>{moment(file.date).fromNow()}</td>
-                        <td>{file.ownerEmail}</td>
-                        <td><a href={`${API_URL}/${file.download}`} target="_blank">Download</a></td>
-                        <td className="text-center shareIcon">
-                            <OverlayTrigger placement={"right"} overlay={<Tooltip id={"tooltip-right"}>Share this file</Tooltip>}>
-                            <FontAwesomeIcon icon={faUserPlus} onClick={() => {
-                                this.selectFile(file._id);
-                            }}
-                            /></OverlayTrigger>
-                            </td>
-                    </tr>)
-                })}
-                {this.state.sharedWithMe.map((file,i) => {
-                    return (<tr key={i}>
-                        <td>{i}</td>
-                        <td>{file.name}</td>
-                        <td>{Math.round(file.size * 100 ) / 100000}</td>
-                        <td>{moment(file.date).fromNow()}</td>
-                        <td>{file.ownerEmail}</td>
-                        <td><a href={`${API_URL}/${file.download}`} target="_blank">Download</a></td>
-                        <td className="text-center shareIcon shareDisable">
-                            <OverlayTrigger placement={"right"} overlay={<Tooltip id={"tooltip-right"}>You're not the owner</Tooltip>}>
-                            <FontAwesomeIcon icon={faUserPlus}/>
-                            </OverlayTrigger>
-                            </td>
-                    </tr>)
-                })}
-                </tbody>
-            </Table>
+            <MyFile myFiles={this.state.myFiles} selectFile={this.selectFile}/>
+            <div className="table-head">
+                <div className="pull-left">
+                    <p>Shared with me</p>
+                </div>
+                <div className="clearfix"></div>
+            </div>
+            <SharedWithMeFile sharedWithMe={this.state.sharedWithMe}/>
+
         </div>
     }
 }
