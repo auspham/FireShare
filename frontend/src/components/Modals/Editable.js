@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {OverlayTrigger, Tooltip} from "react-bootstrap";
 import AccountService from "../../api/AccountService";
-
+import * as fileCheck from 'valid-filename';
 export default class Editable extends Component {
     constructor(props) {
         super(props);
@@ -34,7 +34,7 @@ export default class Editable extends Component {
 
     handleSubmit = () => {
         const { file, rename } = this.state;
-        if(rename.length > 0 && !/\s/.test(rename)) {
+        if(fileCheck(rename)) {
             AccountService.updateFile(file._id, rename).then(() => {
                 this.props.showAlert(
                     'Success!',
@@ -54,7 +54,7 @@ export default class Editable extends Component {
         } else {
             this.props.showAlert(
                 'Error!',
-                `Length of file has to be larger than 1 and cannot contain any whitespace.`,
+                `Invalid filename`,
                 'warning');
         }
     };

@@ -5,6 +5,7 @@ const fs = require('fs');
 const User = require('../models/User');
 const File = require('../models/File');
 const crypto = require('crypto');
+const validFilename = require('valid-filename');
 
 let user;
 
@@ -72,12 +73,16 @@ router.patch('/share/:fileId', auth, async (req,res) => {
 // @desc Edit file name
 router.patch('/update/:fileId', auth, async (req,res) => {
     const fileId = req.params.fileId;
-
-    try {
-        const file = await File.update({ _id: fileId }, { $set: {name: req.body.name}});
-        res.status(200).send(file);
-    } catch (err) {
-        res.status(400).send(err);
+    const { name } = req.body;
+    if(validFilename(name)) {
+        try {
+            const file = await File.update({ _id: fileId }, { $set: {name: name}});
+            res.status(200).send(file);
+        } catch (err) {
+            res.status(400).send(err);
+        }
+    } else {
+        res.status(400).send();
     }
 });
 
