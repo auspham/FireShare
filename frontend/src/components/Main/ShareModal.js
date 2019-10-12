@@ -10,7 +10,8 @@ export default class ShareModal extends Component {
         super(props);
         this.state = {
             selectedUser: [],
-            allUser: []
+            allUser: [],
+            filter: '',
         }
     }
 
@@ -22,7 +23,9 @@ export default class ShareModal extends Component {
 
     fetchUsers = () => {
         AccountService.getAllUser().then(result => {
-            this.setState({ allUser: result.data });
+            this.setState({
+                allUser: result.data,
+            });
         })
     };
 
@@ -37,10 +40,16 @@ export default class ShareModal extends Component {
         this.setState({
             selectedUser: this.state.selectedUser.filter(each => each._id !== user._id)
         })
-    }
+    };
+
+    handleFilter = (event) => {
+        this.setState({
+            filter: event.target.value
+        })
+    };
 
     render() {
-        const { selectedUser } = this.state;
+        const { selectedUser, filter } = this.state;
         return <Modal show={this.props.show} onHide={() => this.props.openModal(false)}>
             <Modal.Header closeButton>
                 <Modal.Title>Share file</Modal.Title>
@@ -48,13 +57,16 @@ export default class ShareModal extends Component {
             <Modal.Body>
                 <h6>Type in the user's email you want to share with</h6>
                     <input type="text" className="form-control" placeholder="Recipient's username"
-                           aria-label="Recipient's username" aria-describedby="basic-addon2"/>
+                           aria-label="Recipient's email" aria-describedby="basic-addon2"
+                           onChange={this.handleFilter}/>
                     <div className="listUser">
                         {this.state.allUser.map((user, i) => {
+                            const check = user.email.indexOf(filter) !== -1 ? "" : "none";
                             return (
                                 <UserHolder user={user} key={i}
                                             select={this.handleSelect}
-                                            remove={this.handleRemove}/>
+                                            remove={this.handleRemove}
+                                            display={check}/>
                             )
                         })}
                     </div>

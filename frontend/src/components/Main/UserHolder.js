@@ -8,6 +8,7 @@ export default class UserHolder extends Component {
     }
 
     handleClick = (user) => {
+        console.log(user.email);
         const { toggle } = this.state;
         if(toggle) {
             this.props.remove(user);
@@ -19,9 +20,9 @@ export default class UserHolder extends Component {
 
     render() {
         const { toggle } = this.state;
-        const { user } = this.props;
+        const { user, display } = this.props;
 
-        return <div className={"userHolder"}>
+        return <div className={"userHolder"} style={{display: display}}>
             <span>{user.email}</span>
             <button className={"btn" + (toggle ? " btn-secondary": " btn-outline-secondary")}
                     onClick={() => this.handleClick(user)}>Select</button>
