@@ -76,7 +76,7 @@ router.patch('/update/:fileId', auth, async (req,res) => {
     const { name } = req.body;
     if(validFilename(name)) {
         try {
-            const file = await File.update({ _id: fileId }, { $set: {name: name}});
+            const file = await File.update({ _id: fileId }, { $set: {name: name, date: Date.now()}});
             res.status(200).send(file);
         } catch (err) {
             res.status(400).send(err);
