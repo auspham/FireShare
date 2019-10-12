@@ -3,6 +3,10 @@
   & svg:hover{ cursor: pointer }
 }
 
+.actionIcon {
+  & svg:hover{ cursor: pointer }
+}
+
 .listUser {
   overflow-y: auto;
   max-height: 200px;

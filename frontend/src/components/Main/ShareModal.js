@@ -15,6 +15,7 @@ export default class ShareModal extends Component {
             allUser: [],
             shared: [],
             filter: '',
+            wasSharing: false
         }
     }
 
@@ -33,6 +34,7 @@ export default class ShareModal extends Component {
         AccountService.retrieveSharedUser(file).then(result => {
             this.setState({
                 selectedUser: result.data,
+                wasSharing: (result.data.length > 0) ? true : false
             });
         }).catch(error => {
             console.error(error);
@@ -62,25 +64,18 @@ export default class ShareModal extends Component {
         const { selectedUser } = this.state;
         const { file } = this.props;
 
-        if(selectedUser.length > 0) {
-            AccountService.shareFile(file, selectedUser).then(result => {
-                this.props.showAlert(
-                    'Success!',
-                    `Done, you have shared your file with ${selectedUser.length} people`,
-                    'success');
-                this.props.openModal(false);
-            }).catch(error => {
-                this.props.showAlert(
-                    'Error!',
-                    'Uh oh, something is wrong',
-                    'danger');
-            });
-        } else {
+        AccountService.shareFile(file, selectedUser).then(result => {
             this.props.showAlert(
-                'Warning!',
-                'You have to choose an user to share first',
+                'Success!',
+                `Done, you have shared your file with ${selectedUser.length} people`,
+                'success');
+            this.props.openModal(false);
+        }).catch(error => {
+            this.props.showAlert(
+                'Error!',
+                'Uh oh, something is wrong',
                 'danger');
-        }
+        });
     };
 
     sortFunc = (a,b) => {
@@ -99,7 +94,8 @@ export default class ShareModal extends Component {
 
 
     render() {
-        const { selectedUser, filter } = this.state;
+        const { selectedUser, filter, wasSharing } = this.state;
+        const noShare = selectedUser.length == 0 && wasSharing;
         return <Modal show={this.props.show} onHide={() => this.props.openModal(false)}>
             <Modal.Header closeButton>
                 <Modal.Title>Share file</Modal.Title>
@@ -127,9 +123,9 @@ export default class ShareModal extends Component {
                 <Button variant="secondary" onClick={() => this.props.openModal(false)}>
                     Close
                 </Button>
-                <Button variant="primary" onClick={this.handleShare}
-                        disabled={selectedUser.length > 0 ? "": "disabled"}>
-                    Share
+                <Button variant={noShare ? "danger" : "primary"} onClick={this.handleShare}
+                        disabled={selectedUser.length > 0 || wasSharing ? "" : "disabled"}>
+                    { noShare ? "Don't Share" : "Share" }
                 </Button>
             </Modal.Footer>
         </Modal>

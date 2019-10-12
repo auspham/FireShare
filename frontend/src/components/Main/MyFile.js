@@ -4,6 +4,8 @@ import moment from "moment";
 import {API_URL} from "../../Constants";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUserPlus} from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisH } from "@fortawesome/free-solid-svg-icons";
+import { Dropdown } from "react-bootstrap";
 
 export default class MyFile extends Component {
     constructor(props) {
@@ -19,8 +21,7 @@ export default class MyFile extends Component {
                 <th>Size (kb)</th>
                 <th>Modified</th>
                 <th>Owner</th>
-                <th>Download</th>
-                <th>Share</th>
+                <th>Action</th>
             </tr>
             </thead>
             <tbody>
@@ -31,13 +32,19 @@ export default class MyFile extends Component {
                     <td>{Math.round(file.size * 100 ) / 100000}</td>
                     <td>{moment(file.date).fromNow()}</td>
                     <td>{file.ownerEmail}</td>
-                    <td><a href={`${API_URL}/${file.download}`} target="_blank">Download</a></td>
-                    <td className="text-center shareIcon">
-                        <OverlayTrigger placement={"right"} overlay={<Tooltip id={"tooltip-right"}>Share this file</Tooltip>}>
-                            <FontAwesomeIcon icon={faUserPlus} onClick={() => {
-                                this.props.selectFile(file._id);
-                            }}
-                            /></OverlayTrigger>
+                    <td className="text-center actionIcon">
+                        <Dropdown>
+                            <Dropdown.Toggle><FontAwesomeIcon icon={faEllipsisH}/></Dropdown.Toggle>
+                            <Dropdown.Menu>
+                                <Dropdown.Item href={`${API_URL}/${file.download}`}>Download</Dropdown.Item>
+                                <Dropdown.Item onClick={() => this.props.selectFile(file._id)}>
+                                    Share
+                                </Dropdown.Item>
+                                <Dropdown.Item href="#/action-3">Rename</Dropdown.Item>
+                                <Dropdown.Item href="#/action-3">Delete</Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
+
                     </td>
                 </tr>)
             })}</tbody></Table>)
