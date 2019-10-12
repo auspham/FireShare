@@ -1,5 +1,6 @@
 .shareIcon {
-  &:hover{ cursor: pointer }
+  color: black;
+  & svg:hover{ cursor: pointer }
 }
 
 .listUser {
@@ -15,6 +16,15 @@
     align-content: center;
     & span {
       align-self: center;
+    }
+  }
+}
+
+.shareIcon.shareDisable{
+  & svg {
+    color: darkgrey;
+    &:hover {
+      cursor: not-allowed !important;
     }
   }
 }
