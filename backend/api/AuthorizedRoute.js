@@ -67,6 +67,20 @@ router.patch('/share/:fileId', auth, async (req,res) => {
    }
 });
 
+// @route PATCH /user/update/{fileId}
+// @desc Edit file name
+router.patch('/update/:fileId', auth, async (req,res) => {
+    const fileId = req.params.fileId;
+
+    try {
+        const file = await File.update({ _id: fileId }, { $set: {name: req.body.name}});
+        res.status(200).send(file);
+    } catch (err) {
+        res.status(400).send(err);
+    }
+});
+
+
 // @route GET /user/share/{fileId}
 // @desc Get the current shared users of a file
 router.get('/share/:fileId', auth, async(req, res) => {

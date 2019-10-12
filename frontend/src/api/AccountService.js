@@ -34,6 +34,12 @@ class AccountService {
         return res;
     }
 
+    async updateFile(fileId, fileName) {
+        console.log('fileName', fileName);
+        let res = await axios.patch(`${API_URL}/user/update/${fileId}`, {name: fileName}, config);
+        return res;
+    }
+
     async retrieveSharedUser(fileId) {
         let res = await axios.get(`${API_URL}/user/share/${fileId}`, config);
         return res;

@@ -6,13 +6,24 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUserPlus} from "@fortawesome/free-solid-svg-icons";
 import { faEllipsisH } from "@fortawesome/free-solid-svg-icons";
 import { Dropdown } from "react-bootstrap";
+import Editable from "../Modals/Editable";
 
 export default class MyFile extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            myFiles: this.props.myFiles
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.myFiles !== this.props.myFiles) {
+            this.setState({myFiles: nextProps.myFiles})
+        }
     }
 
     render() {
+        console.log('caused render');
         return ( <Table striped bordered hover>
             <thead>
             <tr>
@@ -25,10 +36,10 @@ export default class MyFile extends Component {
             </tr>
             </thead>
             <tbody>
-            {this.props.myFiles.map((file,i) => {
+            {this.state.myFiles.map((file,i) => {
                 return (<tr key={i}>
                     <td>{i}</td>
-                    <td>{file.name}</td>
+                    <Editable file={file} fetchFiles={this.props.fetchFiles} showAlert={this.props.showAlert}/>
                     <td>{Math.round(file.size * 100 ) / 100000}</td>
                     <td>{moment(file.date).fromNow()}</td>
                     <td>{file.ownerEmail}</td>

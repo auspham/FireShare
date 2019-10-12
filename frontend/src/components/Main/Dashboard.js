@@ -32,15 +32,15 @@ class Dashboard extends Component {
     }
 
     fetchFiles = () => {
+        console.log('fetching');
         AccountService.retrieveInfo().then(result => {
             console.log(result);
             this.setState({
                 myFiles: result.data.myFiles,
                 sharedWithMe: result.data.sharedWithMe
             });
-            console.log(result);
         })
-    }
+    };
 
     openModal = (option) => {
         this.setState({showUpload: option })
@@ -48,11 +48,11 @@ class Dashboard extends Component {
 
     openShareModal = (option) => {
         this.setState({ showShare: option })
-    }
+    };
 
     openDeleteModal = (option) => {
         this.setState({ showDelete: option })
-    }
+    };
 
     handleShow = (value) => {
         this.setState({
@@ -95,7 +95,7 @@ class Dashboard extends Component {
 
             {this.state.showUpload &&
             <UploadModal show={this.state.showUpload} openModal={this.openModal}
-                         showAlert={this.showAlert} fetchFile={this.fetchFiles}/>}
+                         showAlert={this.showAlert} fetchFiles={this.fetchFiles}/>}
 
             {this.state.showShare &&
             <ShareModal show={this.state.showShare} openModal={this.openShareModal}
@@ -103,7 +103,7 @@ class Dashboard extends Component {
 
             {this.state.showDelete &&
             <DeleteModal show={this.state.showDelete} openModal={this.openDeleteModal}
-                         fetchFile={this.fetchFiles} showAlert={this.showAlert}
+                         fetchFiles={this.fetchFiles} showAlert={this.showAlert}
                          file={this.state.fileToDelete}/>}
 
             <div className="table-head">
@@ -117,7 +117,8 @@ class Dashboard extends Component {
             </div>
 
             <MyFile myFiles={this.state.myFiles} selectFile={this.selectFile}
-                    deleteFile={this.deleteFile}/>
+                    deleteFile={this.deleteFile} fetchFiles={this.fetchFiles}
+                    showAlert={this.showAlert}/>
 
             <div className="table-head">
                 <div className="pull-left">

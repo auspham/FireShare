@@ -19,7 +19,7 @@ export default class DeleteModal extends Component {
                 `Done, you have successfully deleted ${file.name}.`,
                 'primary');
             this.props.openModal(false);
-            this.props.fetchFile();
+            this.props.fetchFiles();
         }).catch(err => {
             this.props.showAlert(
                 'Error!',
