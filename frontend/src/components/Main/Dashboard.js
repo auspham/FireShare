@@ -3,11 +3,11 @@ import AccountService from '../../api/AccountService'
 import './styles/Dashboard.scss'
 import {Button, Table} from "react-bootstrap";
 import { withRouter } from 'react-router-dom';
-import UploadModal from "./UploadModal";
+import UploadModal from "../Modals/UploadModal";
 import CustomAlert from "../Notification/CustomAlert";
 
 import axios from "axios";
-import ShareModal from "./ShareModal";
+import ShareModal from "../Modals/ShareModal";
 import MyFile from "./MyFile";
 import SharedWithMeFile from "./SharedWithMeFile";
 class Dashboard extends Component {
