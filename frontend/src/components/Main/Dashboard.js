@@ -18,6 +18,7 @@ class Dashboard extends Component {
         super(props);
         this.state = {
             myFiles: [],
+            sharedWithMe: [],
             showUpload: false,
             showAlert: false,
             showShare: false,
@@ -32,8 +33,10 @@ class Dashboard extends Component {
 
     fetchFiles = () => {
         AccountService.retrieveInfo().then(result => {
+            console.log(result);
             this.setState({
-                myFiles: result.data
+                myFiles: result.data.myFiles,
+                sharedWithMe: result.data.sharedWithMe
             });
             console.log(result);
         })
@@ -83,7 +86,7 @@ class Dashboard extends Component {
                          showAlert={this.showAlert} fetchFile={this.fetchFiles}/>
 
             <ShareModal show={this.state.showShare} openModal={this.openShareModal}
-                         showAlert={this.showAlert} selectedFile={this.state.select}/>
+                         showAlert={this.showAlert} file={this.state.selectedFile}/>
 
             <div className="table-head">
                 <div className="pull-left">
@@ -123,6 +126,22 @@ class Dashboard extends Component {
                                 this.selectFile(file._id);
                             }}
                         /></td>
+                    </tr>)
+                })}
+                {this.state.sharedWithMe.map((file,i) => {
+                    return (<tr key={i}>
+                        <td>{i}</td>
+                        <td>{file._id}</td>
+                        <td>{file.name}</td>
+                        <td>{file.size / 100000 * 100}</td>
+                        <td>{moment(file.date).fromNow()}</td>
+                        <td>{file.ownerEmail}</td>
+                        <td><a href={`${API_URL}/${file.download}`} target="_blank">Download</a></td>
+                        <td className="text-center shareIcon">
+                            <FontAwesomeIcon icon={faUserPlus} onClick={() => {
+                                this.selectFile(file._id);
+                            }}
+                            /></td>
                     </tr>)
                 })}
                 </tbody>

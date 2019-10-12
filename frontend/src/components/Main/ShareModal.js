@@ -3,6 +3,7 @@ import { Modal, Button } from "react-bootstrap";
 import './styles/DragDrop.scss';
 import AccountService from "../../api/AccountService";
 import UserHolder from "./UserHolder";
+import AuthenticationService from "../../api/AuthenticationService";
 
 
 export default class ShareModal extends Component {
@@ -48,6 +49,26 @@ export default class ShareModal extends Component {
         })
     };
 
+    handleShare = () => {
+        const { selectedUser } = this.state;
+        const { file } = this.props;
+        if(selectedUser.length > 0) {
+            AccountService.shareFile(file, selectedUser).then(result => {
+                console.log(result);
+            }).catch(error => {
+                this.props.showAlert(
+                    'Error!',
+                    'Uh oh, something is wrong',
+                    'danger');
+            });
+        } else {
+            this.props.showAlert(
+                'Warning!',
+                'You have to choose an user to share first',
+                'danger');
+        }
+    };
+
     render() {
         const { selectedUser, filter } = this.state;
         return <Modal show={this.props.show} onHide={() => this.props.openModal(false)}>
@@ -75,7 +96,7 @@ export default class ShareModal extends Component {
                 <Button variant="secondary" onClick={() => this.props.openModal(false)}>
                     Close
                 </Button>
-                <Button variant="primary" onClick={this.uploadFile}
+                <Button variant="primary" onClick={this.handleShare}
                         disabled={selectedUser.length > 0 ? "": "disabled"}>
                     Share
                 </Button>

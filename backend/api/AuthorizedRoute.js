@@ -31,23 +31,43 @@ router.get('/', auth, async (req,res) => {
     const user = req.user;
 
     try {
-        const allFiles = await File.find({ owner: req.user._id });
-        res.status(200).send(allFiles);
+        const myFiles = await File.find({ owner: req.user._id });
+        const sharedWithMe = await File.find({ shared: {$in: [req.user._id]}});
+
+        res.status(200).send({
+            myFiles: myFiles,
+            sharedWithMe: sharedWithMe
+        });
     } catch (err) {
         res.status(400).send(err);
     }
 });
 
 // @route GET /user/all
-// @desc Get All users to share
+// @desc Get All other users to share
 router.get('/all', auth, async (req,res) => {
-    console.log(req.user);
     try {
-        const allUser = await User.find().select("email");
+        const allUser = await User.find({ _id: { $ne: req.user._id }}).select("email");
         res.status(200).send(allUser);
     } catch (err) {
         res.status(400).send(err);
     }
+});
+
+// @route PATCH /user/share/{fileId}
+// @desc Share file with other people.
+router.patch('/share/:fileId', auth, async (req,res) => {
+   const fileId = req.params.fileId;
+   const shareIDs = [];
+   for (const user of req.body) {
+       shareIDs.push(user._id);
+   }
+   try {
+       const file = await File.update({ _id: fileId }, { $set: {shared: shareIDs}});
+       res.status(200).send(file);
+   } catch (err) {
+       res.status(400).send(err);
+   }
 });
 
 // @route POST /user/upload

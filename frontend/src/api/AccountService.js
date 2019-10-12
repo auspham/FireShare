@@ -29,6 +29,11 @@ class AccountService {
         return res;
     }
 
+    async shareFile(fileId, userList) {
+        let res = await axios.patch(`${API_URL}/user/share/${fileId}`, userList, config);
+        return res;
+    }
+
 }
 
 export default new AccountService();
