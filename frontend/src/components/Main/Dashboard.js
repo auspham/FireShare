@@ -26,19 +26,6 @@ class Dashboard extends Component {
     }
 
     componentDidMount() {
-        // axios.defaults.headers.common['auth-token'] = sessionStorage.getItem('USER_TOKEN');
-
-        // // axios.defaults.headers.common['auth-token'] = sessionStorage.getItem('USER_TOKEN');
-        // axios.interceptors.request.use(
-        //     (config) => {
-        //         if (AuthenticationService.isUserLoggedIn()) {
-        //             config.headers['auth-token'] = sessionStorage.getItem('USER_TOKEN');
-        //         }
-        //         return config
-        //     }
-        // )
-        //
-        // console.log(axios.defaults.headers.common);
         this.fetchFiles();
     }
 

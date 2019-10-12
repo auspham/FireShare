@@ -2,14 +2,15 @@ import React, { Component } from "react";
 import { Modal, Button } from "react-bootstrap";
 import './styles/DragDrop.scss';
 import AccountService from "../../api/AccountService";
-import axios from "axios";
+import UserHolder from "./UserHolder";
 
 
 export default class ShareModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            allUser: [],
+            selectedUser: [],
+            allUser: []
         }
     }
 
@@ -21,15 +22,28 @@ export default class ShareModal extends Component {
 
     fetchUsers = () => {
         AccountService.getAllUser().then(result => {
-            console.log(result);
             this.setState({ allUser: result.data });
         })
     };
 
+    handleSelect = (user) => {
+        this.setState({
+            selectedUser: [...this.state.selectedUser, user]
+        });
+    };
+
+    handleRemove = (user) => {
+        // Separate remove & select to reduce loop checking.
+        this.setState({
+            selectedUser: this.state.selectedUser.filter(each => each._id !== user._id)
+        })
+    }
+
     render() {
+        const { selectedUser } = this.state;
         return <Modal show={this.props.show} onHide={() => this.props.openModal(false)}>
             <Modal.Header closeButton>
-                <Modal.Title>Upload file</Modal.Title>
+                <Modal.Title>Share file</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <h6>Type in the user's email you want to share with</h6>
@@ -37,7 +51,11 @@ export default class ShareModal extends Component {
                            aria-label="Recipient's username" aria-describedby="basic-addon2"/>
                     <div className="listUser">
                         {this.state.allUser.map((user, i) => {
-                            return (<div className={"userHolder"} key={user._id}>{user.email}</div>)
+                            return (
+                                <UserHolder user={user} key={i}
+                                            select={this.handleSelect}
+                                            remove={this.handleRemove}/>
+                            )
                         })}
                     </div>
             </Modal.Body>
@@ -45,8 +63,9 @@ export default class ShareModal extends Component {
                 <Button variant="secondary" onClick={() => this.props.openModal(false)}>
                     Close
                 </Button>
-                <Button variant="primary" onClick={this.uploadFile}>
-                    Upload File
+                <Button variant="primary" onClick={this.uploadFile}
+                        disabled={selectedUser.length > 0 ? "": "disabled"}>
+                    Share
                 </Button>
             </Modal.Footer>
         </Modal>

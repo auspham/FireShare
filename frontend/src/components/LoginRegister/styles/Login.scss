@@ -15,6 +15,11 @@
     box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
 }
 
+button, input:focus {
+    outline: 0!important;
+    box-shadow: none!important;
+}
+
 .card-signin .card-title {
     margin-bottom: 2rem;
     font-weight: 300;

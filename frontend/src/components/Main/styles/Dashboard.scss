@@ -3,5 +3,18 @@
 }
 
 .listUser {
-  
+  overflow-y: auto;
+  max-height: 200px;
+  margin: .5em auto;
+
+  .userHolder {
+    display: flex;
+    padding: 5px 5px;
+    background: white;
+    justify-content: space-between;
+    align-content: center;
+    & span {
+      align-self: center;
+    }
+  }
 }
