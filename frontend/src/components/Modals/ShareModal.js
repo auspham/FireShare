@@ -3,8 +3,7 @@ import { Modal, Button } from "react-bootstrap";
 import './styles/DragDrop.scss';
 import AccountService from "../../api/AccountService";
 import UserHolder from "./UserHolder";
-import * as _ from 'lodash';
-import AuthenticationService from "../../api/AuthenticationService";
+
 
 
 export default class ShareModal extends Component {

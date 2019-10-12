@@ -41,7 +41,7 @@ export default class MyFile extends Component {
                                     Share
                                 </Dropdown.Item>
                                 <Dropdown.Item href="#/action-3">Rename</Dropdown.Item>
-                                <Dropdown.Item href="#/action-3">Delete</Dropdown.Item>
+                                <Dropdown.Item onClick={() => this.props.deleteFile(file)}>Delete</Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>
 

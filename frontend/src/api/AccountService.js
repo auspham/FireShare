@@ -38,6 +38,11 @@ class AccountService {
         let res = await axios.get(`${API_URL}/user/share/${fileId}`, config);
         return res;
     }
+
+    async deleteFile(fileId) {
+        let res = await axios.delete(`${API_URL}/user/delete/${fileId}`, config);
+        return res;
+    }
 }
 
 export default new AccountService();

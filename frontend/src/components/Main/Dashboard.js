@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { Component } from 'react';
 import AccountService from '../../api/AccountService'
 import './styles/Dashboard.scss'
@@ -5,11 +6,11 @@ import {Button, Table} from "react-bootstrap";
 import { withRouter } from 'react-router-dom';
 import UploadModal from "../Modals/UploadModal";
 import CustomAlert from "../Notification/CustomAlert";
-
-import axios from "axios";
 import ShareModal from "../Modals/ShareModal";
 import MyFile from "./MyFile";
 import SharedWithMeFile from "./SharedWithMeFile";
+import DeleteModal from "../Modals/DeleteModal";
+
 class Dashboard extends Component {
     constructor(props) {
         super(props);
@@ -20,6 +21,8 @@ class Dashboard extends Component {
             showAlert: false,
             showShare: false,
             selectedFile: null,
+            fileToDelete: null,
+            showDelete: false
         }
     }
 
@@ -47,6 +50,10 @@ class Dashboard extends Component {
         this.setState({ showShare: option })
     }
 
+    openDeleteModal = (option) => {
+        this.setState({ showDelete: option })
+    }
+
     handleShow = (value) => {
         this.setState({
             showAlert: value
@@ -71,7 +78,14 @@ class Dashboard extends Component {
             selectedFile: file,
             showShare: true
         })
-    }
+    };
+
+    deleteFile = (file) => {
+        this.setState({
+            showDelete: true,
+            fileToDelete: file
+        })
+    };
 
     render() {
         return <div className="container mt-5 align-content-center">
@@ -79,12 +93,18 @@ class Dashboard extends Component {
                          message={this.state.message} type={this.state.type}
                          handleShow={this.handleShow} />
 
+            {this.state.showUpload &&
             <UploadModal show={this.state.showUpload} openModal={this.openModal}
-                         showAlert={this.showAlert} fetchFile={this.fetchFiles}/>
+                         showAlert={this.showAlert} fetchFile={this.fetchFiles}/>}
 
             {this.state.showShare &&
             <ShareModal show={this.state.showShare} openModal={this.openShareModal}
                          showAlert={this.showAlert} file={this.state.selectedFile}/>}
+
+            {this.state.showDelete &&
+            <DeleteModal show={this.state.showDelete} openModal={this.openDeleteModal}
+                         fetchFile={this.fetchFiles} showAlert={this.showAlert}
+                         file={this.state.fileToDelete}/>}
 
             <div className="table-head">
                 <div className="pull-left">
@@ -96,7 +116,9 @@ class Dashboard extends Component {
                 <div className="clearfix"></div>
             </div>
 
-            <MyFile myFiles={this.state.myFiles} selectFile={this.selectFile}/>
+            <MyFile myFiles={this.state.myFiles} selectFile={this.selectFile}
+                    deleteFile={this.deleteFile}/>
+
             <div className="table-head">
                 <div className="pull-left">
                     <p>Shared with me</p>

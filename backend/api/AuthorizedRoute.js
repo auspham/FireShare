@@ -105,4 +105,22 @@ router.post("/upload", auth, upload.single('file'), async (req, res, next) => {
    }
 });
 
+// @route DELETE /user/delete/{fileId}
+// @desc Delete a file
+router.delete('/delete/:fileId', auth, async(req,res) => {
+   const fileId = req.params.fileId;
+   try{
+       const removedFile = await File.findOne({ _id: fileId });
+       if (removedFile.owner == req.user._id) {
+           await File.remove({ _id: fileId });
+           res.status(200).send();
+       } else {
+           res.status(403).send();
+       }
+   } catch (err) {
+       res.status(400).send(err);
+   }
+});
+
+
 module.exports = router;
