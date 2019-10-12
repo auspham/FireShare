@@ -34,14 +34,6 @@ class AuthenticationService {
             sessionStorage.setItem('USER_TOKEN', token);
             sessionStorage.setItem('USER_ID', id);
             axios.defaults.headers.common['auth-token'] = sessionStorage.getItem('USER_TOKEN');
-            // axios.interceptors.request.use(
-            //     (config) => {
-            //         if (this.isUserLoggedIn()) {
-            //             config.headers['auth-token'] = token
-            //         }
-            //         return config
-            //     }
-            // )
         }
     }
 

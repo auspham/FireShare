@@ -23,8 +23,8 @@ class AccountService {
         formData.append('owner', sessionStorage.getItem('USER_ID'));
 
         let res = await axios.post(`${API_URL}/user/upload`, formData, {
+            'auth-token': sessionStorage.getItem('USER_TOKEN'),
             'content-type': 'multipart/form-data',
-            'auth-token': sessionStorage.getItem('USER_TOKEN')
         });
         return res;
     }

@@ -69,15 +69,14 @@ export default class UploadModal extends Component {
 
         if (file) {
             AccountService.uploadFile(file).then(r => {
-                console.log(r);
                 this.props.openModal(false);
                 this.props.fetchFile();
-
+                this.setState({file: null});
                 this.props.showAlert(
                     'Success!',
                     'We are uploading your file..',
                     'success');
-            }).catch(err => {
+            }).catch(error => {
                 this.props.showAlert(
                     'Error!',
                     'Uh oh, something is wrong',
@@ -115,7 +114,8 @@ export default class UploadModal extends Component {
                 <Button variant="secondary" onClick={() => this.props.openModal(false)}>
                     Close
                 </Button>
-                <Button variant="primary" onClick={this.uploadFile}>
+                <Button variant="primary" onClick={this.uploadFile}
+                        disabled={file !== null ? "": "disabled"}>
                     Upload File
                 </Button>
             </Modal.Footer>

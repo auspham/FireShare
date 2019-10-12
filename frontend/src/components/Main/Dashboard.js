@@ -26,6 +26,7 @@ class Dashboard extends Component {
     }
 
     componentDidMount() {
+        axios.defaults.headers.common['auth-token'] = sessionStorage.getItem('USER_TOKEN');
         this.fetchFiles();
     }
 
