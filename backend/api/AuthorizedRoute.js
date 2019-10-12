@@ -127,7 +127,8 @@ router.delete('/delete/:fileId', auth, async(req,res) => {
    try{
        const removedFile = await File.findOne({ _id: fileId });
        if (removedFile.owner == req.user._id) {
-           await File.remove({ _id: fileId });
+           const removeFile = await File.remove({ _id: fileId });
+           fs.unlinkSync(`${__basedir}/${removedFile.download}`);
            res.status(200).send();
        } else {
            res.status(403).send();
