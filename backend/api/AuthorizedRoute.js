@@ -9,9 +9,9 @@ let user;
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
-        const dir = './uploads/'
+        const dir = './storage/'
         !fs.existsSync(`${dir}/${req.user._id}`) && fs.mkdirSync(`${dir}/${req.user._id}`);
-        cb(null, './uploads/' + req.user._id);
+        cb(null, './storage/' + req.user._id);
     },
     filename: function(req, file, cb) {
         cb(null, file.originalname);
@@ -33,6 +33,18 @@ router.get('/', auth, async (req,res) => {
     try {
         const allFiles = await File.find({ owner: req.user._id });
         res.status(200).send(allFiles);
+    } catch (err) {
+        res.status(400).send(err);
+    }
+});
+
+// @route GET /user/all
+// @desc Get All users to share
+router.get('/all', auth, async (req,res) => {
+    console.log(req.user);
+    try {
+        const allUser = await User.find().select("email");
+        res.status(200).send(allUser);
     } catch (err) {
         res.status(400).send(err);
     }

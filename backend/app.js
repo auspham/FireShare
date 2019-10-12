@@ -1,3 +1,5 @@
+global.__basedir = __dirname;
+
 const express = require('express');
 const Database = require("mongoose");
 const log = require("morgan");
@@ -7,7 +9,7 @@ const cors = require('cors');
 const bodyParser = require("body-parser");
 const guestRoute = require('./api/AuthorizeRoute');
 const authRoute = require('./api/AuthorizedRoute');
-
+const downloadRoute = require('./api/DownloadFile');
 
 const app = express();
 
@@ -40,8 +42,6 @@ const connection = Database.connect(
 
 app.use('/', guestRoute);
 app.use('/user', authRoute);
-app.get('/uploads/:user/:file', (req, res) => {
-    const file = `${__dirname}/uploads/${req.params.user}/${req.params.file}`;
-    res.download(file);
-});
+app.use('/storage', downloadRoute);
+
 module.exports = app;

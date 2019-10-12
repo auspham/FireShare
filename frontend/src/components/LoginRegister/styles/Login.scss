@@ -3,9 +3,9 @@
     --input-padding-y: .75rem;
 }
 
-button, input, .form-label-group label {
+.form-label-group label {
     &:hover {
-        cursor: pointer;
+        cursor: text;
     }
 }
 
