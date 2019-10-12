@@ -85,8 +85,9 @@ class Dashboard extends Component {
             <UploadModal show={this.state.showUpload} openModal={this.openModal}
                          showAlert={this.showAlert} fetchFile={this.fetchFiles}/>
 
+            {this.state.showShare &&
             <ShareModal show={this.state.showShare} openModal={this.openShareModal}
-                         showAlert={this.showAlert} file={this.state.selectedFile}/>
+                         showAlert={this.showAlert} file={this.state.selectedFile}/>}
 
             <div className="table-head">
                 <div className="pull-left">

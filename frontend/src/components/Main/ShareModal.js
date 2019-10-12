@@ -3,6 +3,7 @@ import { Modal, Button } from "react-bootstrap";
 import './styles/DragDrop.scss';
 import AccountService from "../../api/AccountService";
 import UserHolder from "./UserHolder";
+import * as _ from 'lodash';
 import AuthenticationService from "../../api/AuthenticationService";
 
 
@@ -12,34 +13,42 @@ export default class ShareModal extends Component {
         this.state = {
             selectedUser: [],
             allUser: [],
+            shared: [],
             filter: '',
         }
     }
 
-    componentWillReceiveProps(nextProps){
-        if(nextProps.show !== this.props.show) {
-            this.fetchUsers();
-        }
+    componentDidMount() {
+        this.fetchUsers();
     }
 
     fetchUsers = () => {
+        const { file } = this.props;
+
         AccountService.getAllUser().then(result => {
             this.setState({
                 allUser: result.data,
             });
-        })
+        });
+        AccountService.retrieveSharedUser(file).then(result => {
+            this.setState({
+                selectedUser: result.data,
+            });
+        }).catch(error => {
+            console.error(error);
+        });
     };
 
     handleSelect = (user) => {
         this.setState({
-            selectedUser: [...this.state.selectedUser, user]
+            selectedUser: [...this.state.selectedUser, user._id]
         });
     };
 
     handleRemove = (user) => {
         // Separate remove & select to reduce loop checking.
         this.setState({
-            selectedUser: this.state.selectedUser.filter(each => each._id !== user._id)
+            selectedUser: this.state.selectedUser.filter(each => each !== user._id)
         })
     };
 
@@ -52,9 +61,14 @@ export default class ShareModal extends Component {
     handleShare = () => {
         const { selectedUser } = this.state;
         const { file } = this.props;
+
         if(selectedUser.length > 0) {
             AccountService.shareFile(file, selectedUser).then(result => {
-                console.log(result);
+                this.props.showAlert(
+                    'Success!',
+                    `Done, you have shared your file with ${selectedUser.length} people`,
+                    'success');
+                this.props.openModal(false);
             }).catch(error => {
                 this.props.showAlert(
                     'Error!',
@@ -69,6 +83,21 @@ export default class ShareModal extends Component {
         }
     };
 
+    sortFunc = (a,b) => {
+        const { selectedUser } = this.state;
+        let indexA = selectedUser.indexOf(a._id);
+        let indexB = selectedUser.indexOf(b._id);
+
+        if(indexA < indexB) {
+            return 1;
+        } else if(indexA > indexB) {
+            return -1;
+        }
+
+        return 0;
+    };
+
+
     render() {
         const { selectedUser, filter } = this.state;
         return <Modal show={this.props.show} onHide={() => this.props.openModal(false)}>
@@ -81,13 +110,15 @@ export default class ShareModal extends Component {
                            aria-label="Recipient's email" aria-describedby="basic-addon2"
                            onChange={this.handleFilter}/>
                     <div className="listUser">
-                        {this.state.allUser.map((user, i) => {
+                        {this.state.allUser.sort(this.sortFunc).map((user, i) => {
                             const check = user.email.indexOf(filter) !== -1 ? "" : "none";
+                            const checkShare = selectedUser.includes(user._id);
+
                             return (
-                                <UserHolder user={user} key={i}
+                                <UserHolder user={user} key={user._id}
                                             select={this.handleSelect}
                                             remove={this.handleRemove}
-                                            display={check}/>
+                                            display={check} shared={checkShare}/>
                             )
                         })}
                     </div>

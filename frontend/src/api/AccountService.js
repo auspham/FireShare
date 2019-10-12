@@ -1,13 +1,13 @@
 import axios from 'axios'
 import { API_URL } from '../Constants'
 
-const config = {
-    headers: {'auth-token': sessionStorage.getItem('USER_TOKEN')}
-};
+let config;
 
 class AccountService {
 
     async retrieveInfo() {
+        config = { headers: {'auth-token': sessionStorage.getItem('USER_TOKEN')}};
+        console.log(config, sessionStorage);
         let res = await axios.get(`${API_URL}/user`, config);
         return res;
     }
@@ -34,6 +34,10 @@ class AccountService {
         return res;
     }
 
+    async retrieveSharedUser(fileId) {
+        let res = await axios.get(`${API_URL}/user/share/${fileId}`, config);
+        return res;
+    }
 }
 
 export default new AccountService();

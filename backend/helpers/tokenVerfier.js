@@ -1,11 +1,11 @@
 const Token = require('jsonwebtoken');
 
-module.exports =  (req,res,next) => {
+module.exports = async (req,res,next) => {
     const token = req.header('auth-token');
     if(!token) return res.status(401).send('Access Denied');
 
     try {
-        const verified = Token.verify(token, process.env.SECRET);
+        const verified = await Token.verify(token, process.env.SECRET);
         req.user = verified;
         next();
     } catch (err) {

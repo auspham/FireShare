@@ -29,6 +29,7 @@ class AuthenticationService {
     }
 
     setupAxiosConfigure(data) {
+        console.log('data', data);
         const { token, id } = data;
         if (token && id) {
             sessionStorage.setItem('USER_TOKEN', token);

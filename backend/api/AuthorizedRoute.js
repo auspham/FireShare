@@ -58,16 +58,30 @@ router.get('/all', auth, async (req,res) => {
 // @desc Share file with other people.
 router.patch('/share/:fileId', auth, async (req,res) => {
    const fileId = req.params.fileId;
-   const shareIDs = [];
-   for (const user of req.body) {
-       shareIDs.push(user._id);
-   }
+
    try {
-       const file = await File.update({ _id: fileId }, { $set: {shared: shareIDs}});
+       const file = await File.update({ _id: fileId }, { $set: {shared: req.body}});
        res.status(200).send(file);
    } catch (err) {
        res.status(400).send(err);
    }
+});
+
+// @route GET /user/share/{fileId}
+// @desc Get the current shared users of a file
+router.get('/share/:fileId', auth, async(req, res) => {
+    const fileId = req.params.fileId;
+    console.log(fileId);
+    try {
+        const file = await File.findOne({ _id: fileId });
+        if (file.owner == req.user._id) {
+            res.status(200).send(file.shared);
+        } else {
+            res.status(403).send()
+        }
+    } catch (err) {
+        res.status(400).send(err);
+    }
 });
 
 // @route POST /user/upload
