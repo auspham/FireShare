@@ -34,23 +34,29 @@ export default class Editable extends Component {
 
     handleSubmit = () => {
         const { file, rename } = this.state;
-        AccountService.updateFile(file._id, rename).then(() => {
-            this.props.showAlert(
-                'Success!',
-                `Done, changed the name from ${file.name} to ${rename}`,
-                'success');
-            this.props.fetchFiles();
-            console.log("ffafaf");
-        }).catch(error => {
-            console.log(error);
+        if(rename.length > 0 && !/\s/.test(rename)) {
+            AccountService.updateFile(file._id, rename).then(() => {
+                this.props.showAlert(
+                    'Success!',
+                    `Done, changed the name from ${file.name} to ${rename}`,
+                    'success');
+                this.props.fetchFiles();
+            }).catch(error => {
+                console.log(error);
+                this.props.showAlert(
+                    'Error!',
+                    `Uhoh, something is wrong`,
+                    'danger');
+            });
+            this.setState({
+                editing: false
+            });
+        } else {
             this.props.showAlert(
                 'Error!',
-                `Uhoh, something is wrong`,
-                'danger');
-        });
-        this.setState({
-            editing: false
-        });
+                `Length of file has to be larger than 1 and cannot contain any whitespace.`,
+                'warning');
+        }
     };
 
     render() {
@@ -61,7 +67,11 @@ export default class Editable extends Component {
                     <div onClick={this.handleEdit}>
                         { editing ?
                             <input type={"text"} value={ rename } onChange={this.handleChange}
-                                    onBlur={this.handleSubmit}/>
+                                    onBlur={this.handleSubmit} onKeyPress={event => {
+                                if (event.key === 'Enter') {
+                                    this.handleSubmit();
+                                }
+                            }}/>
                             : file.name }
                     </div>
                 </OverlayTrigger>

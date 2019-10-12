@@ -1,10 +1,11 @@
 const router = require('express').Router();
 const auth = require('../helpers/tokenVerfier');
-const mongoose = require('mongoose');
 const multer = require('multer');
 const fs = require('fs');
 const User = require('../models/User');
 const File = require('../models/File');
+const crypto = require('crypto');
+
 let user;
 
 const storage = multer.diskStorage({
@@ -14,7 +15,7 @@ const storage = multer.diskStorage({
         cb(null, './storage/' + req.user._id);
     },
     filename: function(req, file, cb) {
-        cb(null, file.originalname);
+        cb(null, crypto.randomBytes(20).toString('hex'));
     }
 });
 
@@ -104,7 +105,7 @@ router.post("/upload", auth, upload.single('file'), async (req, res, next) => {
     const { email } = await User.findOne({ _id: req.user });
 
     const file = new File({
-        name: req.file.filename,
+        name: req.file.originalname,
         owner: req.user._id,
         ownerEmail: email,
         download: req.file.path,

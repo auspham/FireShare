@@ -1,0 +1,57 @@
+# To ask
+
+### how you build failure function for:
+
+h e       h e l p s         h e r o e s
+
+-10  0   0 1 2 0 0 0    0 1 2 0 0 0 0
+
+
+
+s s e     s e s e
+
+-1 0 1 0 0 1 0 1
+
+###  Number representation.
+
+![image-20180619101804030](/var/folders/wl/5zc4m5n90d194b1zbgxxtsb00000gn/T/abnerworks.Typora/image-20180619101804030.png)
+
+
+
+hexdecimal = 2^4.
+
+011 0110 1110
+
+3	6	E
+
+10 11 12 13 14
+
+A B C D E
+
+###  why 4.c i can’t get size of string:
+
+```c
+void my_str_cat(char *dst, char *src) {
+    int n1=sizeof(dst)/sizeof(*dst); //this returns 8.
+    int n2=sizeof(src)/sizeof(*src); //this returns 8.
+    // because size of the pointer is 8 bytes. in here you pass in a pointer, not an array.
+    int i = n1;
+    int j = 0;
+    while(j<n2) {
+        dst[i] = src[j];
+        j++;i++;
+        printf("%c",j);
+    }
+}
+int main() {
+    char dst[] = "abc";
+    char src[] = "def";
+    // printf("%c %d\n",dst[2],sizeof(src));
+    my_str_catw(dst,src);
+    printf("%s",dst);
+    return 0;
+}
+```
+
+
+

@@ -32,7 +32,6 @@ class Dashboard extends Component {
     }
 
     fetchFiles = () => {
-        console.log('fetching');
         AccountService.retrieveInfo().then(result => {
             console.log(result);
             this.setState({
