@@ -100,7 +100,7 @@ export default class UploadModal extends Component {
                 <Modal.Title>Upload file</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <h5>Clock to select files from your computer or drag and drop to the area</h5>
+                <h6>Click to select files from your computer or drag and drop to the area</h6>
 
                 <input className="d-none" ref={this.fileInput} type="file" name="files[]"
                        onChange={this.handleTraditionUploadFile}/>

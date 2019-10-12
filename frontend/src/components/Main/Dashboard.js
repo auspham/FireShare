@@ -10,6 +10,7 @@ import moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faUserPlus} from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import ShareModal from "./ShareModal";
 
 class Dashboard extends Component {
     constructor(props) {
@@ -17,7 +18,9 @@ class Dashboard extends Component {
         this.state = {
             myFiles: [],
             showUpload: false,
-            showAlert: false
+            showAlert: false,
+            showShare: false,
+            selectedFile: null,
         }
     }
 
@@ -37,8 +40,12 @@ class Dashboard extends Component {
     }
 
     openModal = (option) => {
-        this.setState({showUpload: option})
+        this.setState({showUpload: option })
     };
+
+    openShareModal = (option) => {
+        this.setState({ showShare: option })
+    }
 
     handleShow = (value) => {
         this.setState({
@@ -59,6 +66,13 @@ class Dashboard extends Component {
         });
     };
 
+    selectFile = (file) => {
+        this.setState({
+            selectedFile: file,
+            showShare: true
+        })
+    }
+
     render() {
         return <div className="container mt-5 align-content-center">
             <CustomAlert show={this.state.showAlert} heading={this.state.heading}
@@ -67,6 +81,9 @@ class Dashboard extends Component {
 
             <UploadModal show={this.state.showUpload} openModal={this.openModal}
                          showAlert={this.showAlert} fetchFile={this.fetchFiles}/>
+
+            <ShareModal show={this.state.showShare} openModal={this.openShareModal}
+                         showAlert={this.showAlert} selectedFile={this.state.select}/>
 
             <div className="table-head">
                 <div className="pull-left">
@@ -93,7 +110,7 @@ class Dashboard extends Component {
                 </thead>
                 <tbody>
                 {this.state.myFiles.map((file,i) => {
-                    return (<tr>
+                    return (<tr key={i}>
                         <td>{i}</td>
                         <td>{file._id}</td>
                         <td>{file.name}</td>
@@ -101,7 +118,11 @@ class Dashboard extends Component {
                         <td>{moment(file.date).fromNow()}</td>
                         <td>{file.ownerEmail}</td>
                         <td><a href={`${API_URL}/${file.download}`} target="_blank">Download</a></td>
-                        <td className="text-center shareIcon"><FontAwesomeIcon icon={faUserPlus}/></td>
+                        <td className="text-center shareIcon">
+                            <FontAwesomeIcon icon={faUserPlus} onClick={() => {
+                                this.selectFile(file._id);
+                            }}
+                        /></td>
                     </tr>)
                 })}
                 </tbody>

@@ -31,7 +31,7 @@ router.get('/', auth, async (req,res) => {
     const user = req.user;
 
     try {
-        const allFiles = await File.find();
+        const allFiles = await File.find({ owner: req.user._id });
         res.status(200).send(allFiles);
     } catch (err) {
         res.status(400).send(err);
