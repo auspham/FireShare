@@ -7,13 +7,13 @@ class NavBar extends Component {
         super(props);
         this.state = {
             email: '',
-            loggedOut: false
         }
     }
 
     componentDidMount() {
         AccountService.retrieveInfo().then(result => {
-            this.setState({email: result.data.email });
+            this.setState({ email: result.data.email });
+            this.props.socket.emit('register', result.data._id);
         }).catch(error => {
             console.error(error);
         })
@@ -21,16 +21,13 @@ class NavBar extends Component {
 
     logout = () => {
         sessionStorage.clear();
-        this.setState({
-            loggedOut: true
-        })
+        this.props.socket.emit('disconnect');
+        window.location.reload();
     };
 
     render() {
-        const { loggedOut } = this.state;
-        if (loggedOut) return <Redirect to="/login"/>
         return (
-            <Navbar bg="light" expand="lg">
+            <Navbar bg="light" expand="lg" sticky="top">
                 <Navbar.Brand href="#home">FireShare</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
