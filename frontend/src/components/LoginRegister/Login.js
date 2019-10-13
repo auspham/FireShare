@@ -14,6 +14,7 @@ class Login extends Component {
             heading: '',
             message: '',
             type: '',
+            valid: false,
         }
     }
 
@@ -23,9 +24,23 @@ class Login extends Component {
         }
     }
 
+    inputChecking = () => {
+        const { email, password } = this.state;
+        return password.length >= 6 && password.length <= 100
+            && email.length >= 6 && email.length < 1000
+    };
+
     handleChange = (event) => {
         this.setState({
             [event.target.name]: event.target.value
+        }, () => {
+            const { retype, password } = this.state;
+
+            if (this.inputChecking()) {
+                this.setState({ valid: true });
+            } else {
+                this.setState({ valid: false });
+            }
         });
     }
 
@@ -50,27 +65,29 @@ class Login extends Component {
 
 
     render() {
+        const { valid } = this.state;
         return <div className="container">
             <div className="row">
                 <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
                     <div className="card card-signin my-5">
                         <div className="card-body">
                             <h5 className="card-title text-center">Sign In</h5>
-                            <form className="form-signin">
+                            <form className="form-signin" autoComplete="off">
                                 <div className="form-label-group">
                                     <input type="email" name="email" id="inputEmail" className="form-control"
-                                           placeholder="Email address" onChange={this.handleChange} required autoFocus/>
+                                           placeholder="Email address" onChange={this.handleChange} required autoFocus
+                                           autoComplete="off"/>
                                     <label htmlFor="inputEmail">Email address</label>
                                 </div>
 
                                 <div className="form-label-group">
                                     <input type="password" name="password" id="inputPassword" className="form-control"
-                                           placeholder="Password" onChange={this.handleChange} required/>
+                                           placeholder="Password" onChange={this.handleChange} required autoComplete="off"/>
                                     <label htmlFor="inputPassword">Password</label>
                                 </div>
 
                                 <button className="btn btn-lg btn-primary btn-block text-uppercase" type="submit"
-                                        onClick={this.handleSubmit}>
+                                        onClick={this.handleSubmit} disabled={valid ? "" : "disabled"}>
                                     Sign in
                                 </button>
 

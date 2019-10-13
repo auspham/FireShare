@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {OverlayTrigger, Table, Tooltip} from "react-bootstrap";
+import {Table} from "react-bootstrap";
 import moment from "moment";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import { faEllipsisH } from "@fortawesome/free-solid-svg-icons";

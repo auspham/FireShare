@@ -56,8 +56,6 @@ export default class UploadModal extends Component {
             file: event.dataTransfer.files[0]
         });
 
-        console.log(event.dataTransfer.files[0]);
-
     };
 
     openFileDialog = () => {

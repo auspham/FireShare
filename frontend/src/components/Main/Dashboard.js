@@ -12,6 +12,8 @@ import SharedWithMeFile from "./SharedWithMeFile";
 import DeleteModal from "../Modals/DeleteModal";
 import Loading from "../Modals/Loading";
 import NavBar from "./NavBar";
+import * as io from 'socket.io-client';
+import { API_URL } from '../../Constants'
 
 class Dashboard extends Component {
     constructor(props) {
@@ -25,8 +27,10 @@ class Dashboard extends Component {
             selectedFile: null,
             fileToDelete: null,
             showDelete: false,
-            loading: true
-        }
+            loading: true,
+            total: []
+        };
+        this.socket = io(API_URL);
     }
 
     componentDidMount() {
@@ -34,17 +38,39 @@ class Dashboard extends Component {
         this.fetchFiles();
     }
 
+    handleSocket = () => {
+        const { total } = this.state;
+
+        total.forEach(file => {
+            this.socket.emit('subscribe', file);
+        });
+
+        this.socket.on("subscribe", file => {
+            this.socket.emit('subscribe', file);
+            this.fetchFiles();
+        });
+
+        this.socket.on("unsubscribe", file => {
+            this.socket.emit('unsubscribe', file);
+            this.fetchFiles();
+        });
+
+        this.socket.on("update", () => {
+            this.fetchFiles();
+        });
+    };
+
     fetchFiles = () => {
         this.setState({
             loading: true,
         });
         AccountService.retrieveFiles().then(result => {
-            console.log(result);
             this.setState({
                 myFiles: result.data.myFiles,
                 sharedWithMe: result.data.sharedWithMe,
+                total: result.data.total,
                 loading: false,
-            });
+            }, () => {this.handleSocket()});
         })
     };
 
@@ -95,7 +121,7 @@ class Dashboard extends Component {
 
     render() {
         return <>
-            <NavBar/>
+            <NavBar socket={this.socket}/>
             <div className="container mt-5 align-content-center">
             {this.state.loading && <Loading/>}
             <CustomAlert show={this.state.showAlert} heading={this.state.heading}
@@ -137,7 +163,8 @@ class Dashboard extends Component {
             </div>
 
             <SharedWithMeFile sharedWithMe={this.state.sharedWithMe}
-                              showAlert={this.showAlert} fetchFiles={this.fetchFiles}/>
+                              showAlert={this.showAlert} fetchFiles={this.fetchFiles}
+                              socket={this.socket}/>
         </div>
         </>
     }

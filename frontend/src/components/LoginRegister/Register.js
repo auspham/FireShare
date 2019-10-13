@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect, withRouter } from "react-router-dom";
 import AuthenticationService from "../../api/AuthenticationService";
-import CustomAlert from "../Notification/CustomAlert";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 class Register extends Component {
     constructor(props) {
@@ -9,7 +9,9 @@ class Register extends Component {
         this.state = {
             email: '',
             password: '',
-            redirect: false
+            retype: '',
+            redirect: false,
+            valid: false,
         }
     }
 
@@ -22,31 +24,49 @@ class Register extends Component {
     handleChange = (event) => {
         this.setState({
             [event.target.name]: event.target.value
+        }, () => {
+            const { retype, password } = this.state;
+
+            if (retype == password && this.inputChecking()) {
+                this.setState({ valid: true });
+            } else {
+                this.setState({ valid: false });
+            }
         });
+    };
+
+    inputChecking = () => {
+        const { email, password } = this.state;
+        return password.length >= 6 && password.length <= 100
+            && email.length >= 6 && email.length < 1000
     };
 
     handleSubmit = (event) => {
         event.preventDefault();
-        AuthenticationService.registerNewAccount(this.state.email, this.state.password)
-            .then(() => {
-                this.setState({ redirect: true });
-                this.props.showAlert(
-                    'Successful!',
-                    'Look who just got an account',
-                    'success');
-            })
-            .catch((err) => {
-                console.error(err);
-                this.props.showAlert(
-                    'Error!',
-                    'Sorry, email is already in used',
-                    'warning');
-            });
+
+        const { valid, email, password } = this.state;
+        if (valid) {
+            AuthenticationService.registerNewAccount(email, password)
+                .then(() => {
+                    this.setState({redirect: true});
+                    this.props.showAlert(
+                        'Successful!',
+                        'Look who just got an account',
+                        'success');
+                })
+                .catch((err) => {
+                    console.error(err);
+                    this.props.showAlert(
+                        'Error!',
+                        'Sorry, email is already in used',
+                        'warning');
+                });
+        }
     };
 
 
     render() {
-        const { redirect } = this.state;
+        const { redirect, valid } = this.state;
         if (redirect) return <Redirect to="/login"/>
 
         return <div className="container">
@@ -57,18 +77,34 @@ class Register extends Component {
                             <h5 className="card-title text-center">Register</h5>
                             <form className="form-signin" onSubmit={this.handleSubmit}>
                                 <div className="form-label-group">
+                                    <OverlayTrigger placement={"bottom"} overlay={<Tooltip id={"tooltip-bottom"}>Length
+                                        must greater than 6</Tooltip>}>
                                     <input type="email" name="email" id="inputEmail" className="form-control"
-                                           placeholder="Email address" onChange={this.handleChange} required/>
+                                           placeholder="Email address" onChange={this.handleChange} required
+                                           autoComplete="off"/>
+                                    </OverlayTrigger>
                                         <label htmlFor="inputEmail">Email address</label>
                                 </div>
 
                                 <div className="form-label-group">
+                                    <OverlayTrigger placement={"bottom"} overlay={<Tooltip id={"tooltip-bottom"}>Length
+                                        must greater than 6</Tooltip>}>
                                     <input type="password" name="password" id="inputPassword" className="form-control"
-                                           placeholder="Password" onChange={this.handleChange} required/>
-                                   <label htmlFor="inputPassword">Password</label>
+                                           placeholder="Password" onChange={this.handleChange} required
+                                           autoComplete="off"/>
+                                    </OverlayTrigger>
+                                    <label htmlFor="inputPassword">Password</label>
                                 </div>
 
-                                <button className="btn btn-lg btn-primary btn-block text-uppercase" type="submit">
+                                <div className="form-label-group">
+                                    <input type="password" name="retype" id="retypePassword" className="form-control"
+                                           placeholder="Retype password" onChange={this.handleChange} required
+                                           autoComplete="off"/>
+                                    <label htmlFor="retypePassword">Retype Password</label>
+                                </div>
+
+                                <button className="btn btn-lg btn-primary btn-block text-uppercase" type="submit"
+                                disabled={valid ? "" : "disabled"}>
                                     Register
                                 </button>
 
