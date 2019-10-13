@@ -1,0 +1,34 @@
+.shareIcon {
+  color: black;
+  & svg:hover{ cursor: pointer }
+}
+
+.actionIcon {
+  & svg:hover{ cursor: pointer }
+}
+
+.listUser {
+  overflow-y: auto;
+  max-height: 200px;
+  margin: .5em auto;
+
+  .userHolder {
+    display: flex;
+    padding: 5px 5px;
+    background: white;
+    justify-content: space-between;
+    align-content: center;
+    & span {
+      align-self: center;
+    }
+  }
+}
+
+.shareIcon.shareDisable{
+  & svg {
+    color: darkgrey;
+    &:hover {
+      cursor: not-allowed !important;
+    }
+  }
+}
