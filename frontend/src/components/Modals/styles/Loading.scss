@@ -3,6 +3,7 @@
     width: 100px;
     position: absolute;
     top: 50%;
+    z-index: 999999999999999;
     left: 50%;
     transform: translate(-50%, -50%);
   }
