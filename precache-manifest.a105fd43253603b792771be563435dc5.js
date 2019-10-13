@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "d6ae64915fd318890c9f558cc5fa73b1",
+    "revision": "b44dc498c7c96429af57bc11cfe66941",
     "url": "/FireShare/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/FireShare/static/css/2.0624914a.chunk.css"
   },
   {
-    "revision": "b6b475c17deae3d87949",
+    "revision": "cf0b5c3651b812371c6a",
     "url": "/FireShare/static/css/main.c299fa2a.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/FireShare/static/js/2.9705172d.chunk.js"
   },
   {
-    "revision": "b6b475c17deae3d87949",
-    "url": "/FireShare/static/js/main.20467406.chunk.js"
+    "revision": "cf0b5c3651b812371c6a",
+    "url": "/FireShare/static/js/main.eeae71b8.chunk.js"
   },
   {
     "revision": "fb30ce0a38f145d92345",
