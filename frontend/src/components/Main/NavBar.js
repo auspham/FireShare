@@ -30,7 +30,7 @@ class NavBar extends Component {
         const { loggedOut } = this.state;
         if (loggedOut) return <Redirect to="/login"/>
         return (
-            <Navbar bg="light" expand="lg">
+            <Navbar bg="light" expand="lg" sticky="top">
                 <Navbar.Brand href="#home">FireShare</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
