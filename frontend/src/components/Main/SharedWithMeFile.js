@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import {Dropdown, OverlayTrigger, Table, Tooltip} from "react-bootstrap";
+import {Dropdown, Table} from "react-bootstrap";
 import moment from "moment";
-import {API_URL} from "../../Constants";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEllipsisH, faUserPlus} from "@fortawesome/free-solid-svg-icons";
 import AccountService from "../../api/AccountService";

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Navbar, Nav, NavDropdown, Form, FormControl, Button } from "react-bootstrap";
-import { withRouter, Redirect } from 'react-router-dom';
+import { Navbar, Nav, Button } from "react-bootstrap";
+import { withRouter } from 'react-router-dom';
 import AccountService from "../../api/AccountService";
 class NavBar extends Component {
     constructor(props) {
