@@ -34,6 +34,11 @@ class AccountService {
         return res;
     }
 
+    async unShareFile(fileId) {
+        let res = await axios.patch(`${API_URL}/user/unshare/${fileId}`, config);
+        return res;
+    }
+
     async updateFile(fileId, fileName) {
         console.log('fileName', fileName);
         let res = await axios.patch(`${API_URL}/user/update/${fileId}`, {name: fileName}, config);

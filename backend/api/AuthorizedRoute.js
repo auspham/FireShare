@@ -77,7 +77,9 @@ router.patch('/unshare/:fileId', auth, async (req,res) => {
     const fileId = req.params.fileId;
 
     try {
-        const file = await File.update({ _id: fileId }, { $set: {shared: req.body}});
+        const file = await File.findOneAndUpdate({ _id: fileId, shared: {$in: req.user._id}}, {
+            $pull: { shared: { $in: req.user._id }}
+        });
         res.status(200).send(file);
     } catch (err) {
         res.status(400).send(err);

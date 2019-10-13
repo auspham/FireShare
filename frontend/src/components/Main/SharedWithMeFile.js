@@ -26,6 +26,22 @@ export default class MyFile extends Component {
                 `Uh oh, something is wrong.`,
                 'danger');
         })
+    };
+
+    handleUnshare = (file) => {
+        AccountService.unShareFile(file._id).then(result => {
+            this.props.showAlert(
+                'Success!',
+                `You have unshared ${file.name} with ${file.ownerEmail}.`,
+                'success');
+            this.props.fetchFiles();
+        }).catch(error => {
+            this.props.showAlert(
+                'Error!',
+                `Uhh ohh, something is wrong, we can't unshare this file.`,
+                'danger');
+            this.props.fetchFiles();
+        });
     }
 
 
@@ -54,10 +70,7 @@ export default class MyFile extends Component {
                             <Dropdown.Toggle><FontAwesomeIcon icon={faEllipsisH}/></Dropdown.Toggle>
                             <Dropdown.Menu>
                                 <Dropdown.Item onClick={() => this.handleDownload(file)}>Download</Dropdown.Item>
-                                <Dropdown.Item disabled>
-                                    Share
-                                </Dropdown.Item>
-                                <Dropdown.Item href="#/action-3">Unshare</Dropdown.Item>
+                                <Dropdown.Item onClick={() => this.handleUnshare(file)}>Unshare</Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>
 
