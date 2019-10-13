@@ -39,7 +39,6 @@ export default class MyFile extends Component {
     }
 
     render() {
-        console.log('caused render');
         return ( <Table striped bordered hover>
             <thead>
             <tr>

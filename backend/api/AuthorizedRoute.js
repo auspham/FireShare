@@ -39,9 +39,20 @@ router.get('/', auth, async (req,res) => {
 
         res.status(200).send({
             myFiles: myFiles,
-            sharedWithMe: sharedWithMe
+            sharedWithMe: sharedWithMe,
         });
     } catch (err) {
+        res.status(400).send(err);
+    }
+});
+
+// @route GET /user/info
+// @desc Return the current user info
+router.get('/info', auth, async (req,res) => {
+    try {
+        const user = await User.findOne({ _id: req.user });
+        res.status(200).send(user);
+    } catch(err) {
         res.status(400).send(err);
     }
 });

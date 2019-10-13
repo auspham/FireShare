@@ -11,6 +11,7 @@ import MyFile from "./MyFile";
 import SharedWithMeFile from "./SharedWithMeFile";
 import DeleteModal from "../Modals/DeleteModal";
 import Loading from "../Modals/Loading";
+import NavBar from "./NavBar";
 
 class Dashboard extends Component {
     constructor(props) {
@@ -37,7 +38,8 @@ class Dashboard extends Component {
         this.setState({
             loading: true,
         });
-        AccountService.retrieveInfo().then(result => {
+        AccountService.retrieveFiles().then(result => {
+            console.log(result);
             this.setState({
                 myFiles: result.data.myFiles,
                 sharedWithMe: result.data.sharedWithMe,
@@ -92,7 +94,9 @@ class Dashboard extends Component {
     };
 
     render() {
-        return <div className="container mt-5 align-content-center">
+        return <>
+            <NavBar/>
+            <div className="container mt-5 align-content-center">
             {this.state.loading && <Loading/>}
             <CustomAlert show={this.state.showAlert} heading={this.state.heading}
                          message={this.state.message} type={this.state.type}
@@ -134,8 +138,8 @@ class Dashboard extends Component {
 
             <SharedWithMeFile sharedWithMe={this.state.sharedWithMe}
                               showAlert={this.showAlert} fetchFiles={this.fetchFiles}/>
-
         </div>
+        </>
     }
 }
 

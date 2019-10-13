@@ -5,10 +5,14 @@ let config;
 
 class AccountService {
 
-    async retrieveInfo() {
+    async retrieveFiles() {
         config = { headers: {'auth-token': sessionStorage.getItem('USER_TOKEN')}};
-        console.log(config, sessionStorage);
         let res = await axios.get(`${API_URL}/user`, config);
+        return res;
+    }
+
+    async retrieveInfo() {
+        let res = await axios.get(`${API_URL}/user/info`, await config);
         return res;
     }
 
@@ -40,7 +44,6 @@ class AccountService {
     }
 
     async updateFile(fileId, fileName) {
-        console.log('fileName', fileName);
         let res = await axios.patch(`${API_URL}/user/update/${fileId}`, {name: fileName}, config);
         return res;
     }
