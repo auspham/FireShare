@@ -53,6 +53,7 @@ router.get('/', auth, async (req,res) => {
             sharedWithMe: sharedWithMe,
             total: totalFile
         });
+
     } catch (err) {
         res.status(400).send(err);
     }
@@ -63,6 +64,7 @@ router.get('/', auth, async (req,res) => {
 router.get('/info', auth, async (req,res) => {
     try {
         const user = await User.findOne({ _id: req.user });
+
         res.status(200).send(user);
     } catch(err) {
         res.status(400).send(err);
@@ -84,10 +86,19 @@ router.get('/all', auth, async (req,res) => {
 // @desc Share file with other people.
 router.patch('/share/:fileId', auth, async (req,res) => {
    const fileId = req.params.fileId;
-
+   const selectedUsers = req.body;
    try {
        const file = await File.findOneAndUpdate({ _id: fileId, owner: req.user._id },
-           { $set: {shared: req.body}});
+           { $set: {shared: selectedUsers}});
+       if(selectedUsers.length > 0) {
+           for ( user of selectedUsers ) {
+               let userIsLive = connectedUser[user];
+               if(userIsLive)
+                   server.io.sockets.connected[userIsLive].emit('subscribe', file._id);
+           }
+       } else {
+           server.io.sockets.in(fileId).emit('unsubscribe', file._id);
+       }
        res.status(200).send(file);
    } catch (err) {
        res.status(400).send(err);
@@ -119,6 +130,7 @@ router.patch('/update/:fileId', auth, async (req,res) => {
             const file = await File.findOneAndUpdate({ _id: fileId, owner: req.user._id },
                 { $set: {name: name, date: Date.now()}});
             server.io.sockets.in(fileId).emit('update');
+
             res.status(200).send(file);
         } catch (err) {
             res.status(400).send(err);
@@ -136,6 +148,8 @@ router.get('/share/:fileId', auth, async(req, res) => {
     console.log(fileId);
     try {
         const file = await File.findOne({ _id: fileId, owner: req.user._id });
+        server.io.sockets.in(fileId).emit('update');
+
         res.status(200).send(file.shared);
     } catch (err) {
         res.status(400).send(err);
@@ -170,6 +184,8 @@ router.delete('/delete/:fileId', auth, async(req,res) => {
    try{
        const removedFile = await File.findOneAndRemove({ _id: fileId, owner: req.user._id });
        fs.unlinkSync(`${__basedir}/${removedFile.download}`);
+       server.io.sockets.in(fileId).emit('update');
+
        res.status(200).send();
    } catch (err) {
        res.status(400).send(err);

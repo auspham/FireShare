@@ -13,7 +13,9 @@ class NavBar extends Component {
 
     componentDidMount() {
         AccountService.retrieveInfo().then(result => {
+            console.log(result);
             this.setState({email: result.data.email });
+            this.props.socket.emit('register', result.data._id);
         }).catch(error => {
             console.error(error);
         })

@@ -40,11 +40,22 @@ class Dashboard extends Component {
 
     handleSocket = () => {
         const { total } = this.state;
+
         total.forEach(file => {
             this.socket.emit('subscribe', file);
         });
+
+        this.socket.on("subscribe", file => {
+            this.socket.emit('subscribe', file);
+            this.fetchFiles();
+        });
+
+        this.socket.on("unsubscribe", file => {
+            this.socket.emit('unsubscribe', file);
+            this.fetchFiles();
+        })
+
         this.socket.on("update", () => {
-            console.log("update");
             this.fetchFiles();
         });
     };
@@ -111,7 +122,7 @@ class Dashboard extends Component {
 
     render() {
         return <>
-            <NavBar/>
+            <NavBar socket={this.socket}/>
             <div className="container mt-5 align-content-center">
             {this.state.loading && <Loading/>}
             <CustomAlert show={this.state.showAlert} heading={this.state.heading}
