@@ -6,6 +6,7 @@ const User = require('../models/User');
 const File = require('../models/File');
 const crypto = require('crypto');
 const validFilename = require('valid-filename');
+const _ = require('lodash');
 
 let user;
 
@@ -62,11 +63,25 @@ router.patch('/share/:fileId', auth, async (req,res) => {
    const fileId = req.params.fileId;
 
    try {
-       const file = await File.update({ _id: fileId }, { $set: {shared: req.body}});
+       const file = await File.findOneAndUpdate({ _id: fileId, owner: req.user._id },
+           { $set: {shared: req.body}});
        res.status(200).send(file);
    } catch (err) {
        res.status(400).send(err);
    }
+});
+
+// @route PATCH /user/unshare/{fileId}
+// @desc Unshare the file for yourself.
+router.patch('/unshare/:fileId', auth, async (req,res) => {
+    const fileId = req.params.fileId;
+
+    try {
+        const file = await File.update({ _id: fileId }, { $set: {shared: req.body}});
+        res.status(200).send(file);
+    } catch (err) {
+        res.status(400).send(err);
+    }
 });
 
 // @route PATCH /user/update/{fileId}
@@ -76,7 +91,8 @@ router.patch('/update/:fileId', auth, async (req,res) => {
     const { name } = req.body;
     if(validFilename(name)) {
         try {
-            const file = await File.update({ _id: fileId }, { $set: {name: name, date: Date.now()}});
+            const file = await File.findOneAndUpdate({ _id: fileId, owner: req.user._id },
+                { $set: {name: name, date: Date.now()}});
             res.status(200).send(file);
         } catch (err) {
             res.status(400).send(err);
@@ -93,12 +109,8 @@ router.get('/share/:fileId', auth, async(req, res) => {
     const fileId = req.params.fileId;
     console.log(fileId);
     try {
-        const file = await File.findOne({ _id: fileId });
-        if (file.owner == req.user._id) {
-            res.status(200).send(file.shared);
-        } else {
-            res.status(403).send("Don't have authorisation")
-        }
+        const file = await File.findOne({ _id: fileId, owner: req.user._id });
+        res.status(200).send(file.shared);
     } catch (err) {
         res.status(400).send(err);
     }
@@ -130,14 +142,9 @@ router.post("/upload", auth, upload.single('file'), async (req, res, next) => {
 router.delete('/delete/:fileId', auth, async(req,res) => {
    const fileId = req.params.fileId;
    try{
-       const removedFile = await File.findOne({ _id: fileId });
-       if (removedFile.owner == req.user._id) {
-           const removeFile = await File.remove({ _id: fileId });
-           fs.unlinkSync(`${__basedir}/${removedFile.download}`);
-           res.status(200).send();
-       } else {
-           res.status(403).send("Don't have authorisation");
-       }
+       const removedFile = await File.findOneAndRemove({ _id: fileId, owner: req.user._id });
+       fs.unlinkSync(`${__basedir}/${removedFile.download}`);
+       res.status(200).send();
    } catch (err) {
        res.status(400).send(err);
    }
