@@ -1,1 +1,1 @@
-export const API_URL = 'https://fireshare-86526.herokuapp.com'
+export const API_URL = 'https://fireshare-86526.herokuapp.com';
