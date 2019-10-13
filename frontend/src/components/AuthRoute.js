@@ -6,7 +6,7 @@ const AuthRoute = ({ children, authed, ...rest }) => {
             <>
                 {Children.map(children, child => cloneElement(child, { ...child.props }))}
             </>
-            : <Redirect to={process.env.PUBLIC_URL + "/login"}/>} />
+            : <Redirect to="/login"/>} />
     )
 }
 

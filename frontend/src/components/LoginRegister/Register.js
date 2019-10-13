@@ -20,7 +20,7 @@ class Register extends Component {
 
     componentDidMount() {
         if(AuthenticationService.isUserLoggedIn() && !this.props.isLoggedIn) {
-            this.props.history.push(process.env.PUBLIC_URL + '/dashboard');
+            this.props.history.push('/dashboard');
         }
     }
 
@@ -71,7 +71,7 @@ class Register extends Component {
 
     render() {
         const { redirect, valid, loading, pressed } = this.state;
-        if (redirect) return <Redirect to={process.env.PUBLIC_URL + "/login"}/>
+        if (redirect) return <Redirect to="/login"/>
 
         return <>
             {loading && <Loading/>}

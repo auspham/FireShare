@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Switch, Route, Link, Redirect, withRouter } from "react-router-dom";
+import { BrowserRouter, Router, Switch, Route, Link, Redirect, withRouter } from "react-router-dom";
 import Dashboard from './Main/Dashboard';
 import NotFound from './NotFound';
 import AuthenticationService from '../api/AuthenticationService';
@@ -52,20 +52,20 @@ class Routing extends Component {
                          message={this.state.message} type={this.state.type}
                          handleShow={this.handleShow} />
 
-            <Router>
+            <Router >
                 <Switch>
-                    <Route path={process.env.PUBLIC_URL + "/login"}>
+                    <Route path="/login">
                         <Login handleLogin={this.handleLogIn}
                                isLoggedIn={this.state.isLoggedIn} showAlert={this.showAlert}/>
                     </Route>
-                    <Route path={process.env.PUBLIC_URL + "/register"}>
+                    <Route path="/register">
                         <Register isLoggedIn={this.state.isLoggedIn}
                                   showAlert={this.showAlert}/>
                     </Route>
-                    <AuthRoute authed={AuthenticationService.isUserLoggedIn()} path={process.env.PUBLIC_URL + "/dashboard"}>
+                    <AuthRoute authed={AuthenticationService.isUserLoggedIn()} path="/dashboard">
                         <Dashboard/>
                     </AuthRoute>
-                    <AuthRoute authed={AuthenticationService.isUserLoggedIn()} path={process.env.PUBLIC_URL + "/"}>
+                    <AuthRoute authed={AuthenticationService.isUserLoggedIn()} path="/">
                         <Dashboard/>
                     </AuthRoute>
                     <Route component={NotFound}/>

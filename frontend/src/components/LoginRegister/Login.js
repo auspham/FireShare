@@ -22,7 +22,7 @@ class Login extends Component {
 
     componentDidMount() {
         if(AuthenticationService.isUserLoggedIn() && !this.props.isLoggedIn) {
-            this.props.history.push(process.env.PUBLIC_URL + '/dashboard');
+            this.props.history.push('/dashboard');
         }
     }
 
