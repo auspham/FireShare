@@ -52,7 +52,7 @@ class Routing extends Component {
                          message={this.state.message} type={this.state.type}
                          handleShow={this.handleShow} />
 
-            <Router>
+            <Router basename={'/FireShare'}>
                 <Switch>
                     <Route path="/login">
                         <Login handleLogin={this.handleLogIn}
