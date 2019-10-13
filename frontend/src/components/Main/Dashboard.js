@@ -10,6 +10,7 @@ import ShareModal from "../Modals/ShareModal";
 import MyFile from "./MyFile";
 import SharedWithMeFile from "./SharedWithMeFile";
 import DeleteModal from "../Modals/DeleteModal";
+import Loading from "../Modals/Loading";
 
 class Dashboard extends Component {
     constructor(props) {
@@ -22,7 +23,8 @@ class Dashboard extends Component {
             showShare: false,
             selectedFile: null,
             fileToDelete: null,
-            showDelete: false
+            showDelete: false,
+            loading: true
         }
     }
 
@@ -32,11 +34,14 @@ class Dashboard extends Component {
     }
 
     fetchFiles = () => {
+        this.setState({
+            loading: true,
+        });
         AccountService.retrieveInfo().then(result => {
-            console.log(result);
             this.setState({
                 myFiles: result.data.myFiles,
-                sharedWithMe: result.data.sharedWithMe
+                sharedWithMe: result.data.sharedWithMe,
+                loading: false,
             });
         })
     };
@@ -88,6 +93,7 @@ class Dashboard extends Component {
 
     render() {
         return <div className="container mt-5 align-content-center">
+            {this.state.loading && <Loading/>}
             <CustomAlert show={this.state.showAlert} heading={this.state.heading}
                          message={this.state.message} type={this.state.type}
                          handleShow={this.handleShow} />
