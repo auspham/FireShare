@@ -97,7 +97,7 @@ router.get('/share/:fileId', auth, async(req, res) => {
         if (file.owner == req.user._id) {
             res.status(200).send(file.shared);
         } else {
-            res.status(403).send()
+            res.status(403).send("Don't have authorisation")
         }
     } catch (err) {
         res.status(400).send(err);
@@ -136,7 +136,7 @@ router.delete('/delete/:fileId', auth, async(req,res) => {
            fs.unlinkSync(`${__basedir}/${removedFile.download}`);
            res.status(200).send();
        } else {
-           res.status(403).send();
+           res.status(403).send("Don't have authorisation");
        }
    } catch (err) {
        res.status(400).send(err);

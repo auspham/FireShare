@@ -49,6 +49,15 @@ class AccountService {
         let res = await axios.delete(`${API_URL}/user/delete/${fileId}`, config);
         return res;
     }
+
+    async downloadFile(fileURL) {
+        let res = await axios.get(`${API_URL}/${fileURL}`, {
+            'auth-token': sessionStorage.getItem('USER_TOKEN'),
+            'content-type': 'multipart/form-data',
+            'responseType': 'blob'
+        });
+        return res;
+    }
 }
 
 export default new AccountService();
