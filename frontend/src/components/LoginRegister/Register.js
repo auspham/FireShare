@@ -1,15 +1,21 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link, Redirect, withRouter } from "react-router-dom";
 import AuthenticationService from "../../api/AuthenticationService";
 import CustomAlert from "../Notification/CustomAlert";
 
-export default class Register extends Component {
+class Register extends Component {
     constructor(props) {
         super(props);
         this.state = {
             email: '',
             password: '',
             redirect: false
+        }
+    }
+
+    componentDidMount() {
+        if(AuthenticationService.isUserLoggedIn() && !this.props.isLoggedIn) {
+            this.props.history.push('/dashboard');
         }
     }
 
@@ -75,3 +81,4 @@ export default class Register extends Component {
         </div>
     }
 }
+export default withRouter(Register);

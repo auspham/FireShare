@@ -1,18 +1,21 @@
+global.__basedir = __dirname;
+
 const express = require('express');
 const Database = require("mongoose");
 const log = require("morgan");
 const environment = require('dotenv');
 const cors = require('cors');
+
 const bodyParser = require("body-parser");
 const guestRoute = require('./api/AuthorizeRoute');
-const authRoute = require('./api/AuthorizedRoute')
+const authRoute = require('./api/AuthorizedRoute');
+const downloadRoute = require('./api/DownloadFile');
+
 const app = express();
 
 environment.config();
 
-Database.connect(
-    process.env.DB_CONNECT,
-    { useNewUrlParser: true, useUnifiedTopology: true });
+app.use(log("dev"));
 
 // CORS
 app.use((req, res, next) => {
@@ -32,9 +35,13 @@ app.options('*', cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use(log("dev"));
+const connection = Database.connect(
+    process.env.DB_CONNECT,
+    { useNewUrlParser: true, useUnifiedTopology: true });
+
 
 app.use('/', guestRoute);
 app.use('/user', authRoute);
+app.use('/storage', downloadRoute);
 
 module.exports = app;

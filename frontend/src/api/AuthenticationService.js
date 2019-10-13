@@ -28,9 +28,13 @@ class AuthenticationService {
         return res;
     }
 
-    setupAxiosConfigure(token) {
-        sessionStorage.setItem('USER_TOKEN', token);
-        axios.defaults.headers.common['auth-token'] = sessionStorage.getItem('USER_TOKEN');
+    setupAxiosConfigure(data) {
+        const { token, id } = data;
+        if (token && id) {
+            sessionStorage.setItem('USER_TOKEN', token);
+            sessionStorage.setItem('USER_ID', id);
+            axios.defaults.headers.common['auth-token'] = sessionStorage.getItem('USER_TOKEN');
+        }
     }
 
     isUserLoggedIn() {

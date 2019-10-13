@@ -5,6 +5,8 @@ const { formValidate } = require('../helpers/validator');
 const Token = require('jsonwebtoken');
 const SALT_LENGTH = 10;
 
+// @route POST /register
+// @desc Handle registration
 router.post('/register', async (req,res) => {
     const { error } = await formValidate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
@@ -28,6 +30,8 @@ router.post('/register', async (req,res) => {
     }
 });
 
+// @route POST /login
+// @desc Authenticate the login and return JWT token
 router.post('/login', async (req,res) => {
     const { error } = await formValidate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
@@ -39,7 +43,10 @@ router.post('/login', async (req,res) => {
     if(!validPassword) return res.status(400).send('Invalid password');
 
     const token = Token.sign({_id: user._id}, process.env.SECRET);
-    res.header('auth-token', token).send(token);
+    res.header('auth-token', token).send({
+        token: token,
+        id: user._id
+    });
 
     console.log('Logged in');
 
