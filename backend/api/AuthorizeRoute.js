@@ -48,8 +48,6 @@ router.post('/login', async (req,res) => {
         id: user._id
     });
 
-    console.log('Logged in');
-
     res.send('Logged In successfully');
 });
 

@@ -145,7 +145,6 @@ router.patch('/update/:fileId', auth, async (req,res) => {
 // @desc Get the current shared users of a file
 router.get('/share/:fileId', auth, async(req, res) => {
     const fileId = req.params.fileId;
-    console.log(fileId);
     try {
         const file = await File.findOne({ _id: fileId, owner: req.user._id });
         server.io.sockets.in(fileId).emit('update');

@@ -14,7 +14,6 @@ export default class UserHolder extends Component {
     }
 
     handleClick = (user) => {
-        console.log(user.email);
         const { toggle } = this.state;
         if(toggle) {
             this.props.remove(user);
