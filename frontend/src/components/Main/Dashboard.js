@@ -29,7 +29,7 @@ class Dashboard extends Component {
             showDelete: false,
             loading: true,
             total: []
-        }
+        };
         this.socket = io(API_URL);
     }
 
@@ -53,7 +53,7 @@ class Dashboard extends Component {
         this.socket.on("unsubscribe", file => {
             this.socket.emit('unsubscribe', file);
             this.fetchFiles();
-        })
+        });
 
         this.socket.on("update", () => {
             this.fetchFiles();
@@ -65,7 +65,6 @@ class Dashboard extends Component {
             loading: true,
         });
         AccountService.retrieveFiles().then(result => {
-            console.log(result);
             this.setState({
                 myFiles: result.data.myFiles,
                 sharedWithMe: result.data.sharedWithMe,
