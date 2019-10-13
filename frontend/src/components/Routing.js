@@ -52,7 +52,7 @@ class Routing extends Component {
                          message={this.state.message} type={this.state.type}
                          handleShow={this.handleShow} />
 
-            <Router basename={process.env.PUBLIC_URL}>
+            <Router>
                 <Switch>
                     <Route path={process.env.PUBLIC_URL + "/login"}>
                         <Login handleLogin={this.handleLogIn}
