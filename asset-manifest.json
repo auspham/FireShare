@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/FireShare/static/css/main.c299fa2a.chunk.css",
+    "main.js": "/FireShare/static/js/main.2df797bf.chunk.js",
+    "main.js.map": "/FireShare/static/js/main.2df797bf.chunk.js.map",
+    "runtime-main.js": "/FireShare/static/js/runtime-main.f5d18282.js",
+    "runtime-main.js.map": "/FireShare/static/js/runtime-main.f5d18282.js.map",
+    "static/css/2.0624914a.chunk.css": "/FireShare/static/css/2.0624914a.chunk.css",
+    "static/js/2.d3e9f4ea.chunk.js": "/FireShare/static/js/2.d3e9f4ea.chunk.js",
+    "static/js/2.d3e9f4ea.chunk.js.map": "/FireShare/static/js/2.d3e9f4ea.chunk.js.map",
+    "index.html": "/FireShare/index.html",
+    "precache-manifest.e5a5f5428bb90ff22521ae553d78a440.js": "/FireShare/precache-manifest.e5a5f5428bb90ff22521ae553d78a440.js",
+    "service-worker.js": "/FireShare/service-worker.js",
+    "static/css/2.0624914a.chunk.css.map": "/FireShare/static/css/2.0624914a.chunk.css.map",
+    "static/css/main.c299fa2a.chunk.css.map": "/FireShare/static/css/main.c299fa2a.chunk.css.map",
+    "static/media/loading.4e0d68ae.svg": "/FireShare/static/media/loading.4e0d68ae.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.f5d18282.js",
+    "static/css/2.0624914a.chunk.css",
+    "static/js/2.d3e9f4ea.chunk.js",
+    "static/css/main.c299fa2a.chunk.css",
+    "static/js/main.2df797bf.chunk.js"
+  ]
+}
