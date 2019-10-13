@@ -7,6 +7,7 @@ const File = require('../models/File');
 const crypto = require('crypto');
 const validFilename = require('valid-filename');
 const _ = require('lodash');
+const server = require('../server');
 
 let user;
 
@@ -34,12 +35,23 @@ router.get('/', auth, async (req,res) => {
     const user = req.user;
 
     try {
+        const totalFile = [];
+
         const myFiles = await File.find({ owner: req.user._id });
         const sharedWithMe = await File.find({ shared: {$in: [req.user._id]}});
+
+        for (file of myFiles) {
+            totalFile.push(file._id);
+        }
+
+        for (file of sharedWithMe) {
+            totalFile.push(file._id);
+        }
 
         res.status(200).send({
             myFiles: myFiles,
             sharedWithMe: sharedWithMe,
+            total: totalFile
         });
     } catch (err) {
         res.status(400).send(err);
@@ -106,6 +118,7 @@ router.patch('/update/:fileId', auth, async (req,res) => {
         try {
             const file = await File.findOneAndUpdate({ _id: fileId, owner: req.user._id },
                 { $set: {name: name, date: Date.now()}});
+            server.io.sockets.in(fileId).emit('update');
             res.status(200).send(file);
         } catch (err) {
             res.status(400).send(err);

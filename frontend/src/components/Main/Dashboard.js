@@ -12,6 +12,8 @@ import SharedWithMeFile from "./SharedWithMeFile";
 import DeleteModal from "../Modals/DeleteModal";
 import Loading from "../Modals/Loading";
 import NavBar from "./NavBar";
+import * as io from 'socket.io-client';
+import { API_URL } from '../../Constants'
 
 class Dashboard extends Component {
     constructor(props) {
@@ -25,14 +27,27 @@ class Dashboard extends Component {
             selectedFile: null,
             fileToDelete: null,
             showDelete: false,
-            loading: true
+            loading: true,
+            total: []
         }
+        this.socket = io(API_URL);
     }
 
     componentDidMount() {
         axios.defaults.headers.common['auth-token'] = sessionStorage.getItem('USER_TOKEN');
         this.fetchFiles();
     }
+
+    handleSocket = () => {
+        const { total } = this.state;
+        total.forEach(file => {
+            this.socket.emit('subscribe', file);
+        });
+        this.socket.on("update", () => {
+            console.log("update");
+            this.fetchFiles();
+        });
+    };
 
     fetchFiles = () => {
         this.setState({
@@ -43,8 +58,9 @@ class Dashboard extends Component {
             this.setState({
                 myFiles: result.data.myFiles,
                 sharedWithMe: result.data.sharedWithMe,
+                total: result.data.total,
                 loading: false,
-            });
+            }, () => {this.handleSocket()});
         })
     };
 
