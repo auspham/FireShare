@@ -39,7 +39,7 @@ export default class MyFile extends Component {
     }
 
     render() {
-        return ( <Table striped bordered hover>
+        return ( <Table striped bordered hover responsive>
             <thead>
             <tr>
                 <th>#</th>

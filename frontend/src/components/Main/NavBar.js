@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { Navbar, Nav, NavDropdown, Form, FormControl, Button } from "react-bootstrap";
+import { withRouter, Redirect } from 'react-router-dom';
 import AccountService from "../../api/AccountService";
-export default class NavBar extends Component {
+class NavBar extends Component {
     constructor(props) {
         super(props);
         this.state = {
             email: '',
+            loggedOut: false
         }
     }
 
@@ -17,7 +19,16 @@ export default class NavBar extends Component {
         })
     }
 
+    logout = () => {
+        sessionStorage.clear();
+        this.setState({
+            loggedOut: true
+        })
+    };
+
     render() {
+        const { loggedOut } = this.state;
+        if (loggedOut) return <Redirect to="/login"/>
         return (
             <Navbar bg="light" expand="lg">
                 <Navbar.Brand href="#home">FireShare</Navbar.Brand>
@@ -27,9 +38,12 @@ export default class NavBar extends Component {
 
                     </Nav>
                     <Navbar.Text style={{color: "black"}}>{this.state.email}</Navbar.Text>
-                    <Button className={"ml-2"} variant={"outline-dark"}>Log out</Button>
+                    <Button className={"ml-2"} variant={"outline-dark"}
+                            onClick={this.logout}>Log out</Button>
                 </Navbar.Collapse>
             </Navbar>
         )
     }
 }
+
+export default withRouter(NavBar);
