@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './styles/Login.scss';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect, withRouter } from "react-router-dom";
 import AuthenticationService from "../../api/AuthenticationService";
-import CustomAlert from '../Notification/CustomAlert';
+import Loading from "../Modals/Loading";
 
 class Login extends Component {
     constructor(props) {
@@ -15,6 +15,7 @@ class Login extends Component {
             message: '',
             type: '',
             valid: false,
+            loading: false,
         }
     }
 
@@ -42,10 +43,11 @@ class Login extends Component {
                 this.setState({ valid: false });
             }
         });
-    }
+    };
 
     handleSubmit = (event) => {
         event.preventDefault();
+        this.setState({ loading: true });
         const { history, isLoggedIn, handleLogin } = this.props;
         AuthenticationService.authenticateAccount(this.state.email, this.state.password)
             .then(() => {
@@ -55,7 +57,8 @@ class Login extends Component {
                 }
             })
             .catch((err) => {
-                console.log(err)
+                console.log(err);
+                this.setState({ loading: false });
                 this.props.showAlert(
                     'Error!',
                     'Sorry, we cannot verify your account',
@@ -65,8 +68,11 @@ class Login extends Component {
 
 
     render() {
-        const { valid } = this.state;
-        return <div className="container">
+        const { valid, loading } = this.state;
+        return <>
+            {loading && <Loading/>}
+
+            <div className="container">
             <div className="row">
                 <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
                     <div className="card card-signin my-5">
@@ -98,6 +104,7 @@ class Login extends Component {
                 </div>
             </div>
         </div>
+        </>
     }
 }
 

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect, withRouter } from "react-router-dom";
 import AuthenticationService from "../../api/AuthenticationService";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import Loading from "../Modals/Loading";
 
 class Register extends Component {
     constructor(props) {
@@ -12,6 +13,7 @@ class Register extends Component {
             retype: '',
             redirect: false,
             valid: false,
+            loading: false,
         }
     }
 
@@ -43,12 +45,12 @@ class Register extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-
+        this.setState({ loading: true });
         const { valid, email, password } = this.state;
         if (valid) {
             AuthenticationService.registerNewAccount(email, password)
                 .then(() => {
-                    this.setState({redirect: true});
+                    this.setState({redirect: true, loading: false});
                     this.props.showAlert(
                         'Successful!',
                         'Look who just got an account',
@@ -66,10 +68,12 @@ class Register extends Component {
 
 
     render() {
-        const { redirect, valid } = this.state;
+        const { redirect, valid, loading } = this.state;
         if (redirect) return <Redirect to="/login"/>
 
-        return <div className="container">
+        return <>
+            {loading && <Loading/>}
+            <div className="container">
             <div className="row">
                 <div className="col-lg-10 col-xl-9 mx-auto">
                     <div className="card card-signin flex-row my-5">
@@ -115,6 +119,7 @@ class Register extends Component {
                 </div>
             </div>
         </div>
+        </>
     }
 }
 export default withRouter(Register);
