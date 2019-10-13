@@ -2,7 +2,6 @@ global.__basedir = __dirname;
 
 const express = require('express');
 const Database = require("mongoose");
-const log = require("morgan");
 const environment = require('dotenv');
 const cors = require('cors');
 
@@ -14,8 +13,6 @@ const downloadRoute = require('./api/DownloadFile');
 const app = express();
 
 environment.config();
-
-app.use(log("dev"));
 
 // CORS
 app.use((req, res, next) => {

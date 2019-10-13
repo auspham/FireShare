@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "node server.js"
   },
   "author": "",
   "license": "ISC",
@@ -28,5 +28,8 @@
   "devDependencies": {
     "morgan": "^1.9.1",
     "nodemon": "^1.19.3"
+  },
+  "engines": {
+    "node": "10.x"
   }
 }
