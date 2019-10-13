@@ -4,11 +4,30 @@ import moment from "moment";
 import {API_URL} from "../../Constants";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEllipsisH, faUserPlus} from "@fortawesome/free-solid-svg-icons";
+import AccountService from "../../api/AccountService";
+import * as FileDownload from "js-file-download";
 
 export default class MyFile extends Component {
     constructor(props) {
         super(props);
     }
+
+    handleDownload = (file) => {
+        AccountService.downloadFile(file.download).then((result) => {
+            FileDownload(result.data, file.name);
+            this.props.showAlert(
+                'Success!',
+                `Downloading ${file.name}.`,
+                'info');
+        }).catch(error => {
+            console.error(error);
+            this.props.showAlert(
+                'Error!',
+                `Uh oh, something is wrong.`,
+                'danger');
+        })
+    }
+
 
     render() {
         return ( <Table striped bordered hover>
@@ -34,12 +53,11 @@ export default class MyFile extends Component {
                         <Dropdown>
                             <Dropdown.Toggle><FontAwesomeIcon icon={faEllipsisH}/></Dropdown.Toggle>
                             <Dropdown.Menu>
-                                <Dropdown.Item href={`${API_URL}/${file.download}`}>Download</Dropdown.Item>
+                                <Dropdown.Item onClick={() => this.handleDownload(file)}>Download</Dropdown.Item>
                                 <Dropdown.Item disabled>
                                     Share
                                 </Dropdown.Item>
-                                <Dropdown.Item href="#/action-3">Rename</Dropdown.Item>
-                                <Dropdown.Item href="#/action-3">Delete</Dropdown.Item>
+                                <Dropdown.Item href="#/action-3">Unshare</Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>
 

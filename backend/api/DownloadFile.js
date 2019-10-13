@@ -4,7 +4,7 @@ const auth = require('../helpers/tokenVerfier');
 const _ = require('lodash');
 
 // @route GET /storage/{user}/{file}
-// @desc Download the file - everyone has the link can download.
+// @desc Download the file - only shared or owned can download.
 router.get('/:user/:file', auth, async (req, res) => {
     const fileLocation = `storage/${req.params.user}/${req.params.file}`;
     try {

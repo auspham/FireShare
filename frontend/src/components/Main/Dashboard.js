@@ -131,7 +131,8 @@ class Dashboard extends Component {
                 </div>
                 <div className="clearfix"></div>
             </div>
-            <SharedWithMeFile sharedWithMe={this.state.sharedWithMe}/>
+
+            <SharedWithMeFile sharedWithMe={this.state.sharedWithMe} showAlert={this.showAlert}/>
 
         </div>
     }
