@@ -13,11 +13,11 @@ io.on('connection', socket => {
     socket.on('register', (userId) => {
         user = userId;
         connectedUser[userId] = id;
-        console.log(connectedUser);
     });
 
     socket.on('disconnect', () => {
-       delete connectedUser[user];
+        console.log('deleted', user);
+        delete connectedUser[user];
     });
 
     socket.on('subscribe', file => {

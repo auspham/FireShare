@@ -164,7 +164,8 @@ class Dashboard extends Component {
             </div>
 
             <SharedWithMeFile sharedWithMe={this.state.sharedWithMe}
-                              showAlert={this.showAlert} fetchFiles={this.fetchFiles}/>
+                              showAlert={this.showAlert} fetchFiles={this.fetchFiles}
+                              socket={this.socket}/>
         </div>
         </>
     }

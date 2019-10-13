@@ -30,6 +30,7 @@ export default class MyFile extends Component {
 
     handleUnshare = (file) => {
         AccountService.unShareFile(file._id).then(result => {
+            this.props.socket.emit('unsubscribe', file._id);
             this.props.showAlert(
                 'Success!',
                 `You have unshared ${file.name} with ${file.ownerEmail}.`,
