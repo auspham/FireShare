@@ -15,13 +15,14 @@ class Login extends Component {
             message: '',
             type: '',
             valid: false,
+            pressed: false,
             loading: false,
         }
     }
 
     componentDidMount() {
         if(AuthenticationService.isUserLoggedIn() && !this.props.isLoggedIn) {
-            this.props.history.push('/dashboard');
+            this.props.history.push(process.env.PUBLIC_URL + '/dashboard');
         }
     }
 
@@ -47,7 +48,7 @@ class Login extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        this.setState({ loading: true });
+        this.setState({ loading: true, pressed: true });
         const { history, isLoggedIn, handleLogin } = this.props;
         AuthenticationService.authenticateAccount(this.state.email, this.state.password)
             .then(() => {
@@ -63,12 +64,13 @@ class Login extends Component {
                     'Error!',
                     'Sorry, we cannot verify your account',
                     'danger');
+                this.setState({ pressed: false })
             });
     };
 
 
     render() {
-        const { valid, loading } = this.state;
+        const { valid, loading, pressed } = this.state;
         return <>
             {loading && <Loading/>}
 
@@ -93,7 +95,7 @@ class Login extends Component {
                                 </div>
 
                                 <button className="btn btn-lg btn-primary btn-block text-uppercase" type="submit"
-                                        onClick={this.handleSubmit} disabled={valid ? "" : "disabled"}>
+                                        onClick={this.handleSubmit} disabled={valid && !pressed ? "" : "disabled"}>
                                     Sign in
                                 </button>
 

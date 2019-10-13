@@ -14,12 +14,13 @@ class Register extends Component {
             redirect: false,
             valid: false,
             loading: false,
+            pressed: false
         }
     }
 
     componentDidMount() {
         if(AuthenticationService.isUserLoggedIn() && !this.props.isLoggedIn) {
-            this.props.history.push('/dashboard');
+            this.props.history.push(process.env.PUBLIC_URL + '/dashboard');
         }
     }
 
@@ -45,7 +46,7 @@ class Register extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        this.setState({ loading: true });
+        this.setState({ loading: true, pressed: true });
         const { valid, email, password } = this.state;
         if (valid) {
             AuthenticationService.registerNewAccount(email, password)
@@ -62,14 +63,15 @@ class Register extends Component {
                         'Error!',
                         'Sorry, email is already in used',
                         'warning');
+                    this.setState({ pressed: false });
                 });
         }
     };
 
 
     render() {
-        const { redirect, valid, loading } = this.state;
-        if (redirect) return <Redirect to="/login"/>
+        const { redirect, valid, loading, pressed } = this.state;
+        if (redirect) return <Redirect to={process.env.PUBLIC_URL + "/login"}/>
 
         return <>
             {loading && <Loading/>}
@@ -108,7 +110,7 @@ class Register extends Component {
                                 </div>
 
                                 <button className="btn btn-lg btn-primary btn-block text-uppercase" type="submit"
-                                disabled={valid ? "" : "disabled"}>
+                                disabled={valid && !pressed? "" : "disabled"}>
                                     Register
                                 </button>
 

@@ -54,18 +54,18 @@ class Routing extends Component {
 
             <Router basename={process.env.PUBLIC_URL}>
                 <Switch>
-                    <Route path="/login">
+                    <Route path={process.env.PUBLIC_URL + "/login"}>
                         <Login handleLogin={this.handleLogIn}
                                isLoggedIn={this.state.isLoggedIn} showAlert={this.showAlert}/>
                     </Route>
-                    <Route path="/register">
+                    <Route path={process.env.PUBLIC_URL + "/register"}>
                         <Register isLoggedIn={this.state.isLoggedIn}
                                   showAlert={this.showAlert}/>
                     </Route>
-                    <AuthRoute authed={AuthenticationService.isUserLoggedIn()} path="/dashboard">
+                    <AuthRoute authed={AuthenticationService.isUserLoggedIn()} path={process.env.PUBLIC_URL + "/dashboard"}>
                         <Dashboard/>
                     </AuthRoute>
-                    <AuthRoute authed={AuthenticationService.isUserLoggedIn()} path="/">
+                    <AuthRoute authed={AuthenticationService.isUserLoggedIn()} path={process.env.PUBLIC_URL + "/"}>
                         <Dashboard/>
                     </AuthRoute>
                     <Route component={NotFound}/>
