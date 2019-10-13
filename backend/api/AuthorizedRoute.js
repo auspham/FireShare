@@ -13,7 +13,7 @@ let user;
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
-        const dir = './storage/'
+        const dir = './storage'
         !fs.existsSync(`${dir}/${req.user._id}`) && fs.mkdirSync(`${dir}/${req.user._id}`);
         cb(null, './storage/' + req.user._id);
     },
