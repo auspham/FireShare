@@ -3,6 +3,7 @@ import { Modal, Button } from "react-bootstrap";
 import './styles/DragDrop.scss';
 import AccountService from "../../api/AccountService";
 import UserHolder from "./UserHolder";
+import Loading from "./Loading";
 
 
 
@@ -14,12 +15,14 @@ export default class ShareModal extends Component {
             allUser: [],
             shared: [],
             filter: '',
-            wasSharing: false
+            wasSharing: false,
+            loading: true
         }
     }
 
     componentDidMount() {
         this.fetchUsers();
+        this.setState({loading: true});
     }
 
     fetchUsers = () => {
@@ -35,6 +38,7 @@ export default class ShareModal extends Component {
                 selectedUser: result.data,
                 wasSharing: (result.data.length > 0) ? true : false
             });
+            this.setState({loading: false});
         }).catch(error => {
             console.error(error);
         });
@@ -95,7 +99,9 @@ export default class ShareModal extends Component {
     render() {
         const { selectedUser, filter, wasSharing } = this.state;
         const noShare = selectedUser.length == 0 && wasSharing;
-        return <Modal show={this.props.show} onHide={() => this.props.openModal(false)}>
+        return <>
+            {this.state.loading && <Loading/>}
+            <Modal show={this.props.show} onHide={() => this.props.openModal(false)}>
             <Modal.Header closeButton>
                 <Modal.Title>Share file</Modal.Title>
             </Modal.Header>
@@ -128,5 +134,6 @@ export default class ShareModal extends Component {
                 </Button>
             </Modal.Footer>
         </Modal>
+        </>
     }
 }
