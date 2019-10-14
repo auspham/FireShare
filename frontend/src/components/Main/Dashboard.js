@@ -37,6 +37,7 @@ class Dashboard extends Component {
             "transports" : ["websocket"]
         };
         this.socket = io(API_URL, connectionOptions);
+        this.handleSocket();
     }
 
     componentDidMount() {
@@ -45,11 +46,6 @@ class Dashboard extends Component {
     }
 
     handleSocket = () => {
-        const { total } = this.state;
-
-        total.forEach(file => {
-            this.socket.emit('subscribe', file);
-        });
 
         this.socket.on("subscribe", file => {
             this.socket.emit('subscribe', file);
@@ -76,7 +72,13 @@ class Dashboard extends Component {
                 sharedWithMe: result.data.sharedWithMe,
                 total: result.data.total,
                 loading: false,
-            }, () => {this.handleSocket()});
+            }, () => {
+                const { total } = this.state;
+
+                total.forEach(file => {
+                    this.socket.emit('subscribe', file);
+                });
+            });
         })
     };
 
@@ -152,7 +154,7 @@ class Dashboard extends Component {
                     <p>My File</p>
                 </div>
                 <div className="pull-right">
-                    <Button className="mb-2 float-right" onClick={() => {this.openModal(true)}}>Upload file</Button>
+                    <Button name="upload" className="mb-2 float-right" onClick={() => {this.openModal(true)}}>Upload file</Button>
                 </div>
                 <div className="clearfix"></div>
             </div>

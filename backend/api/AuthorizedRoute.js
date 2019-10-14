@@ -87,14 +87,23 @@ router.get('/all', auth, async (req,res) => {
 router.patch('/share/:fileId', auth, async (req,res) => {
    const fileId = req.params.fileId;
    const selectedUsers = req.body;
+
    try {
        const file = await File.findOneAndUpdate({ _id: fileId, owner: req.user._id },
            { $set: {shared: selectedUsers}});
-       if(selectedUsers.length > 0) {
+       if(selectedUsers.length > 0 && selectedUsers.length > file.shared.length) {
            for ( user of selectedUsers ) {
                let userIsLive = connectedUser[user];
                if(userIsLive)
                    server.io.sockets.connected[userIsLive].emit('subscribe', file._id);
+           }
+       } else if(selectedUsers.length < file.shared.length) {
+           const removedUsers = _.xor(selectedUsers, file.shared);
+
+           for (removeUser of removedUsers) {
+               let userIsLive = connectedUser[removeUser];
+               if(userIsLive)
+                   server.io.sockets.connected[userIsLive].emit('unsubscribe', file._id);
            }
        } else {
            server.io.sockets.in(fileId).emit('unsubscribe', file._id);
@@ -169,7 +178,7 @@ router.post("/upload", auth, upload.single('file'), async (req, res, next) => {
    });
 
    try {
-       const saveFile = file.save();
+       const saveFile = await file.save();
        res.send({ saveFile })
    } catch (err) {
        res.status(400).send(err);

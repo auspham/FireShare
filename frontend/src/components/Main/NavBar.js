@@ -35,7 +35,7 @@ class NavBar extends Component {
 
                     </Nav>
                     <Navbar.Text style={{color: "black"}}>{this.state.email}</Navbar.Text>
-                    <Button className={"ml-2"} variant={"outline-dark"}
+                    <Button className={"ml-2 logout"} variant={"outline-dark"}
                             onClick={this.logout}>Log out</Button>
                 </Navbar.Collapse>
             </Navbar>
