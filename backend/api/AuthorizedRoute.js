@@ -87,6 +87,7 @@ router.get('/all', auth, async (req,res) => {
 router.patch('/share/:fileId', auth, async (req,res) => {
    const fileId = req.params.fileId;
    const selectedUsers = req.body;
+
    try {
        const file = await File.findOneAndUpdate({ _id: fileId, owner: req.user._id },
            { $set: {shared: selectedUsers}});
@@ -169,7 +170,7 @@ router.post("/upload", auth, upload.single('file'), async (req, res, next) => {
    });
 
    try {
-       const saveFile = file.save();
+       const saveFile = await file.save();
        res.send({ saveFile })
    } catch (err) {
        res.status(400).send(err);
