@@ -152,7 +152,7 @@ class Dashboard extends Component {
                     <p>My File</p>
                 </div>
                 <div className="pull-right">
-                    <Button className="mb-2 float-right" onClick={() => {this.openModal(true)}}>Upload file</Button>
+                    <Button name="upload" className="mb-2 float-right" onClick={() => {this.openModal(true)}}>Upload file</Button>
                 </div>
                 <div className="clearfix"></div>
             </div>
