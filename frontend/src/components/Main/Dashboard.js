@@ -37,6 +37,7 @@ class Dashboard extends Component {
             "transports" : ["websocket"]
         };
         this.socket = io(API_URL, connectionOptions);
+        this.handleSocket();
     }
 
     componentDidMount() {
@@ -45,11 +46,6 @@ class Dashboard extends Component {
     }
 
     handleSocket = () => {
-        const { total } = this.state;
-
-        total.forEach(file => {
-            this.socket.emit('subscribe', file);
-        });
 
         this.socket.on("subscribe", file => {
             this.socket.emit('subscribe', file);
@@ -76,7 +72,13 @@ class Dashboard extends Component {
                 sharedWithMe: result.data.sharedWithMe,
                 total: result.data.total,
                 loading: false,
-            }, () => {this.handleSocket()});
+            }, () => {
+                const { total } = this.state;
+
+                total.forEach(file => {
+                    this.socket.emit('subscribe', file);
+                });
+            });
         })
     };
 
