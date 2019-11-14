@@ -1,4 +1,4 @@
-[TOC]
+
 # FireShare
 
 A publish-subscribe real-tive file sharing system.
