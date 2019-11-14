@@ -33,41 +33,6 @@ Live: https://austinph.me/FireShare/login
   - Frontend: **WebdriverIO**
 - Cloud Hosting: **Heroku** (because I expired my other clouds credit),  **Github Page**.
 
-## Approach
-
-### Tech stack selection
-
-- I seperated back/front end to make it easier for you guys to see the structure.
-- Backend I used NodeJS, for frontend I use ReactJS (which I’m most familiar with) as they can share the same dependencies and same type of language. Later on, if i want to combine the 2 folders, I can reuse the dependencies easily.
-- I chose MongoDB Atlas (cloud) as I expected to deploy on cloud. Thus, it’s easier.
-- I chose Socket.IO as it’s really quick and easy for setting up
-- I chose WebdriverIO as I want to stimulate real user interaction with the system.
-- I chose Chai, Mocha as it is one of the most efficient testing framework.
-
-### Coding Structure
-
-- **Class structure**: I seperated both back-front end into different class/directories regarding to its functionalities
-
-- **Variable name and Commenting**: I only comment if neccessary, instead I tried to name the variable the way to make it easier to read even without commenting.
-- **Branching and use of git**: 
-  - I used github issues as a todo list. Therefore, you will see all the branches with a number before which matches to my github issues.
-  - I have `master-dev-feature` branches for my development. For `hotfix`, sometimes I just push to `dev_branch` which is bad practice but due to time constraint, I have to fast up the development.
-
-## Challenge
-
-- I exprienced most of the challenge with Routing for front-end. I had to use a work-around in order to pass the JWT token around, which I’m sure there will be much of an easier way to do.
-- I got trouble in delivering the file name from back-end to front-end as my client doesn’t receive `content-disposition` header, which I then renamed based on front-end file, which is not really a good practice.
-- Short time on development since I have assignments due during the development week. Thus, short time on writing unit tests as well.
-- For “aesthetic”, I combined the traditional file input (choose file button) with the drag & drop zone (either drag and drop the file or click into the div to select file), which makes it harder for chromedriver to recognise as I’m not able to set value of the file if the driver can’t see the traditional file input. I haven’t found out the way to stimulate drag and drop for testing yet.
-- Pub-Sub model does the work but not really well. It’s a bit slow especially on Heroku.
-
-### What would I do differently if I had time to work on it
-
-- I would write all test first - more scenarios, to get the overall of the project.
-- Use Firebase Realtime Storage with Firebase Function instead of MongoDB and Socket for pub-sub models.
-- Avoid using bootstrap for faster loading time.
-- I have to keep the storage folder for some of the test to work. But later on if I have time, I will stimulate a different database just for testing.
-- I will combine the 2 folders as it will reduce the load time by sharing some of the dependencies.
 
 ## How to run
 
