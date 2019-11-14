@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/FireShare/static/css/main.7626829c.chunk.css",
-    "main.js": "/FireShare/static/js/main.bb2232c1.chunk.js",
-    "main.js.map": "/FireShare/static/js/main.bb2232c1.chunk.js.map",
+    "main.js": "/FireShare/static/js/main.23c4d23d.chunk.js",
+    "main.js.map": "/FireShare/static/js/main.23c4d23d.chunk.js.map",
     "runtime-main.js": "/FireShare/static/js/runtime-main.f5d18282.js",
     "runtime-main.js.map": "/FireShare/static/js/runtime-main.f5d18282.js.map",
     "static/css/2.0624914a.chunk.css": "/FireShare/static/css/2.0624914a.chunk.css",
-    "static/js/2.c2e4bd2e.chunk.js": "/FireShare/static/js/2.c2e4bd2e.chunk.js",
-    "static/js/2.c2e4bd2e.chunk.js.map": "/FireShare/static/js/2.c2e4bd2e.chunk.js.map",
+    "static/js/2.b6ed6091.chunk.js": "/FireShare/static/js/2.b6ed6091.chunk.js",
+    "static/js/2.b6ed6091.chunk.js.map": "/FireShare/static/js/2.b6ed6091.chunk.js.map",
     "index.html": "/FireShare/index.html",
-    "precache-manifest.b728dc48d6a6a46b1e56c9e63f12a784.js": "/FireShare/precache-manifest.b728dc48d6a6a46b1e56c9e63f12a784.js",
+    "precache-manifest.126e979c0e72d3268b547b071c2e3def.js": "/FireShare/precache-manifest.126e979c0e72d3268b547b071c2e3def.js",
     "service-worker.js": "/FireShare/service-worker.js",
     "static/css/2.0624914a.chunk.css.map": "/FireShare/static/css/2.0624914a.chunk.css.map",
     "static/css/main.7626829c.chunk.css.map": "/FireShare/static/css/main.7626829c.chunk.css.map",
@@ -18,8 +18,8 @@
   "entrypoints": [
     "static/js/runtime-main.f5d18282.js",
     "static/css/2.0624914a.chunk.css",
-    "static/js/2.c2e4bd2e.chunk.js",
+    "static/js/2.b6ed6091.chunk.js",
     "static/css/main.7626829c.chunk.css",
-    "static/js/main.bb2232c1.chunk.js"
+    "static/js/main.23c4d23d.chunk.js"
   ]
 }
