@@ -5,12 +5,24 @@ A publish-subscribe real-tive file sharing system.
 
 Live: https://austinph.me/FireShare/login
 
+
 ## Features
 
 - Login, Register, Authentication using JWT Token.
 - Database.
 - Upload/Share/Unshare/Edit/Remove/Download file with other people - with Authentication
 - Pub-sub model on file with real time update.
+
+## Demo
+
+![image-20191114231344484](Readme.assets/image-20191114231344484.png)
+
+![image-20191114231443608](Readme.assets/image-20191114231443608.png)
+
+![image-20191114231552894](Readme.assets/image-20191114231552894.png)
+
+![image-20191114231759560](Readme.assets/image-20191114231759560.png)
+
 
 ### What can user do?
 
@@ -80,4 +92,4 @@ npm run test
 
 
 
-That’s it. Now enjoy the application running (hopefully).
+That’s it. Now enjoy the application running.
