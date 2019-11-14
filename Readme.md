@@ -9,7 +9,7 @@
 
 A publish-subscribe real-tive file sharing system.
 
-Live: https://austinph.me/FireShare/login
+Live: https://austinph.me/FireShare
 
 
 ## Technology used
