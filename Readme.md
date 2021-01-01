@@ -1,13 +1,13 @@
 <p align="center">
   <a href="#"><img src="https://img.shields.io/badge/License-MIT-blue.svg"></a>
-  <a href="https://austinph.me/FireShare/" target="_blank"><img src="https://img.shields.io/website?url=https%3A%2F%2Faustinph.me%2FFireShare%2F"></a>
+  <a href="https://auspham.dev/FireShare" target="_blank"><img src="https://img.shields.io/website?url=https%3A%2F%2Faustinph.me%2FFireShare%2F"></a>
 
 # FireShare
 
 
 A publish-subscribe real-tive file sharing system.
 
-Live: https://austinph.me/FireShare
+Live: https://auspham.dev/FireShare
 
 
 ## Technology used
