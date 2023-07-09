@@ -19,7 +19,7 @@ Live: https://auspham.dev/FireShare
 - Testing: 
   - Backend: **Mocha**, **Chai**, 
   - Frontend: **WebdriverIO**
-- Cloud Hosting: **Heroku** (because I expired my other clouds credit),  **Github Page**.
+- Cloud Hosting: **Heroku**,  **Github Page**.
 
 ## Demo
 
